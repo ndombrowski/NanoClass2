@@ -39,8 +39,7 @@ engine: knitr
 
 To do:
 
-- Add comment about: ) when building the environments I had the issue as pointed out here: https://forum.qiime2.org/t/qiime-2-2023-9-installation-issue/27925 If conda solver rules are set to "strict", it will create a conflict between mamba and libmamba (if I understand correctly) which returns a failed environment solving for Qiime2. This happens with the latest version of  Qiime2 only and I think this will be patched. The only problem I see is that I had to set the solver rules to "flexible" to build the environments and it didn't seem to cause problems down the line but I can't be sure about it.
-
+- Check run for `non-zero` errors
 
 ### Test-run
 

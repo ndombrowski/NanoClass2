@@ -7,7 +7,8 @@ rule centrifuge_get_db:
         tax_tree = os.path.join(DBPATH,"centrifuge/taxonomy/nodes.dmp"),
         tax_map = os.path.join(DBPATH,"centrifuge/ref-tax.map"),
         ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna"),
-        ref_tax = os.path.join(DBPATH,"centrifuge/ref-taxonomy.txt")
+        ref_tax = os.path.join(DBPATH,"centrifuge/ref-taxonomy.txt"),
+        tax_folder = directory(os.path.join(DBPATH,"centrifuge/taxonomy"))
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["centrifuge"]["dbmemory"]
@@ -21,10 +22,12 @@ rule centrifuge_get_db:
         "benchmarks/centrifuge_get_db.txt"
     shell:
         """
-        centrifuge-download -o os.path.join(DBPATH,"/centrifuge/taxonomy) taxonomy > {log} 2>&1
+        centrifuge-download -o {output.tax_folder} taxonomy > {log} 2>&1
+        
         wget {params.map_url} -q -O - | gzip -d -c - | \
             awk '{{print $1\".\"$2\".\"$3\"\t\"$(NF)}}' \
             > {output.tax_map} 2>> {log}
+        
         {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m centrifuge \
             -S {output.ref_seqs} -T {output.ref_tax} 2>> {log}
         """
@@ -36,13 +39,13 @@ rule centrifuge_build_db:
         conversion_table = os.path.join(DBPATH,"centrifuge/ref-tax.map"),
         ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
     output:
-        touch(os.path.join(DBPATH,"/centrifuge/CENTRIFUGE_DB_BUILD"))
+        touch(os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD"))
     threads:
         config["centrifuge"]["dbthreads"]
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["centrifuge"]["dbmemory"]
     params:
-        prefix = "db/centrifuge/ref-db"
+        prefix = os.path.join(DBPATH,"centrifuge/ref-db")
     conda:
         os.path.join(ENVDIR,config["centrifuge"]["environment"])
     log:

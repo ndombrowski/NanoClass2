@@ -16,7 +16,7 @@ rule mothur_build_db:
         os.path.join(ENVDIR,config["mothur"]["environment"])
     shell:
         """
-        scripts/todb.py -s {input.aln} -t {input.tax} -m mothur \
+        {SRCDIR}/todb.py -s {input.aln} -t {input.tax} -m mothur \
             -S {output.aln} -T {output.tax} 2> {log}
         """
 
