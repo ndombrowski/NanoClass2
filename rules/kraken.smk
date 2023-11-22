@@ -12,7 +12,7 @@ rule kraken_build_db:
         db = "db/kraken",
         db_type = config["kraken"]["dbtype"]
     conda:
-        config["kraken"]["environment"]
+        os.path.join(ENVDIR,config["kraken"]["environment"])
     log:
         "logs/kraken_build_db.log"
     benchmark:
@@ -37,7 +37,7 @@ rule kraken_classify:
     params:
         db_dir = "db/kraken"
     conda:
-        config["kraken"]["environment"]
+        os.path.join(ENVDIR,config["kraken"]["environment"])
     log:
         "logs/{run}/kraken_classify_{sample}.log"
     benchmark:
@@ -63,7 +63,7 @@ rule kraken_tomat:
         otumat = "classifications/{run}/kraken/{sample}.kraken.otumat"
     threads: 1
     conda:
-        config["kraken"]["environment"]
+        os.path.join(ENVDIR,config["kraken"]["environment"])
     log:
         "logs/{run}/kraken_tomat_{sample}.log"
     benchmark:

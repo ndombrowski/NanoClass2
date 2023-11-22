@@ -1,8 +1,8 @@
 rule megablast_build_db:
     input:
-        "db/blastn/DB_BUILD"
+        os.path.join(DBPATH,"blastn/DB_BUILD")
     output:
-        touch("db/megablast/DB_BUILD")
+        touch(os.path.join(DBPATH,"megablast/DB_BUILD"))
 
 
 rule megablast_chunk:
@@ -16,7 +16,7 @@ rule megablast_chunk:
         n_chunks = config["megablast"]["threads"],
         out_dir = "classifications/{run}/megablast/{sample}"
     conda:
-        config["megablast"]["environment"]
+        os.path.join(ENVDIR,config["megablast"]["environment"])
     shell:
         """
         fasta-splitter --n-parts {params.n_chunks} {input} \
@@ -26,7 +26,7 @@ rule megablast_chunk:
 rule megablast_classify:
     input:
         rules.megablast_build_db.output,
-        db = "db/common/ref-seqs.fna",
+        db = os.path.join(DBPATH,"common/ref-seqs.fna"),
         fasta = "classifications/{run}/megablast/{sample}/{sample}.part-{chunk}.fasta"
     output:
         all = temp("classifications/{run}/megablast/{sample}/{chunk}.megablast.out")
@@ -38,7 +38,7 @@ rule megablast_classify:
         pident = config["megablast"]["pctidentity"],
         nseqs = config["blastn"]["ntargetseqs"]
     conda:
-        config["megablast"]["environment"]
+        os.path.join(ENVDIR,config["megablast"]["environment"])
     log:
         "logs/{run}/megablast_classify_{sample}_{chunk}.log"
     benchmark:
@@ -68,7 +68,7 @@ rule megablast_aggregate:
         threads = config["megablast"]["threads"],
         alnlen = config["megablast"]["alnlength"]
     conda:
-        config["megablast"]["environment"]
+        os.path.join(ENVDIR,config["megablast"]["environment"])
     log:
         "logs/{run}/megablast_aggregate_{sample}.log"
     benchmark:
@@ -87,21 +87,21 @@ rule megablast_aggregate:
 rule megablast_tolca:
     input:
         blast = "classifications/{run}/megablast/{sample}.megablast.out",
-        db = "db/common/ref-taxonomy.txt"
+        db = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
         "classifications/{run}/megablast/{sample}.megablast.taxlist",
     threads: 1
     params:
         lcacons = config["megablast"]["lcaconsensus"]
     conda:
-        config["megablast"]["environment"]
+        os.path.join(ENVDIR,config["megablast"]["environment"])
     log:
         "logs/{run}/megablast_tolca_{sample}.log"
     benchmark:
         "benchmarks/{run}/megablast_tolca_{sample}.txt"
     shell:
       	"""
-        scripts/tolca.py -b {input.blast} -t {input.db} \
+        {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -113,10 +113,10 @@ rule megablast_tomat:
         otumat = "classifications/{run}/megablast/{sample}.megablast.otumat"
     threads: 1
     conda:
-        config["megablast"]["environment"]
+        os.path.join(ENVDIR,config["megablast"]["environment"])
     log:
         "logs/{run}/megablast_tomat_{sample}.log"
     benchmark:
         "benchmarks/{run}/megablast_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -l {input} 2> {log}"
+        "{SRCDIR}/tomat.py -l {input} 2> {log}"

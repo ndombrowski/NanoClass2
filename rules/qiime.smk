@@ -6,7 +6,7 @@ rule qiime_import_query:
     threads:
         1
     conda:
-        config["qiime"]["environment"]
+        os.path.join(ENVDIR,config["qiime"]["environment"])
     log:
         "logs/{run}/qiime_import_query_{sample}.log"
     benchmark:
@@ -22,12 +22,12 @@ rule qiime_import_query:
 
 rule qiime_import_refseq:
     input:
-        "db/common/ref-seqs.fna"
+        os.path.join(DBPATH,"common/ref-seqs.fna")
     output:
-        "db/qiime/ref-seqs.qza"
+        os.path.join(DBPATH,"qiime/ref-seqs.qza")
     threads: 1
     conda:
-        config["qiime"]["environment"]
+        os.path.join(ENVDIR,config["qiime"]["environment"])
     log:
         "logs/qiime_import_refseq.log"
     benchmark:
@@ -43,12 +43,12 @@ rule qiime_import_refseq:
 
 rule qiime_import_taxonomy:
     input:
-        "db/common/ref-taxonomy.txt"
+        os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
-        "db/qiime/ref-taxonomy.qza"
+        os.path.join(DBPATH,"qiime/ref-taxonomy.qza")
     threads: 1
     conda:
-        config["qiime"]["environment"]
+        os.path.join(ENVDIR,config["qiime"]["environment"])
     log:
         "logs/qiime_import_taxonomy.log"
     benchmark:   
@@ -66,8 +66,8 @@ rule qiime_import_taxonomy:
 rule qiime_classify:
     input:
         query="classifications/{run}/qiime/{sample}.seqs.qza",
-        taxo="db/qiime/ref-taxonomy.qza",
-        ref_seqs="db/qiime/ref-seqs.qza"
+        taxo = os.path.join(DBPATH,"qiime/ref-taxonomy.qza"),
+        ref_seqs = os.path.join(DBPATH,"qiime/ref-seqs.qza")
     output:
         qza = temp("classifications/{run}/qiime/{sample}.qiime.qza"),
         path = temp(directory("classifications/{run}/qiime/{sample}/")),
@@ -79,7 +79,7 @@ rule qiime_classify:
     threads:
         config["qiime"]["threads"]
     conda:
-        config["qiime"]["environment"]
+        os.path.join(ENVDIR,config["qiime"]["environment"])
     log:
         "logs/{run}/qiime_classify_{sample}.log"
     benchmark:
@@ -114,7 +114,7 @@ rule qiime_taxlist:
     benchmark:
         "benchmarks/{run}/qiime_tomat_{sample}.txt"
     conda:
-        config["qiime"]["environment"]
+        os.path.join(ENVDIR,config["qiime"]["environment"])
     shell:
         """
         cut -f 1,2 {input} | grep -P -v '\\tUnassigned$' | \
@@ -137,5 +137,5 @@ rule qiime_tomat:
     benchmark:
         "benchmarks/{run}/qiime_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -l {input.list} 2> {log}"
+        "{SRCDIR}/tomat.py -l {input.list} 2> {log}"
 

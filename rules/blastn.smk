@@ -1,15 +1,15 @@
 rule blastn_build_db:
     input:
-        "db/common/ref-seqs.fna"
+        os.path.join(DBPATH,"common/ref-seqs.fna")
     output:
-        touch("db/blastn/DB_BUILD")
+        touch(os.path.join(DBPATH, "blastn/DB_BUILD"))
     threads: 1
     log:
         "logs/blastn_build_db.log"
     benchmark:
         "benchmarks/blastn_build_db.txt"
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     shell:
         """
         makeblastdb -in {input} -parse_seqids \
@@ -28,7 +28,7 @@ rule blastn_chunk:
         n_chunks = config["blastn"]["threads"],
         out_dir = "classifications/{run}/blastn/{sample}"
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     shell:
         """
         fasta-splitter --n-parts {params.n_chunks} {input} \
@@ -39,7 +39,7 @@ rule blastn_chunk:
 rule blastn_classify:
     input:
         rules.blastn_build_db.output,
-        db = "db/common/ref-seqs.fna",
+        db = os.path.join(DBPATH,"common/ref-seqs.fna"),
         fasta = "classifications/{run}/blastn/{sample}/{sample}.part-{chunk}.fasta"
     output:
         all = temp("classifications/{run}/blastn/{sample}/{chunk}.blastn.out")
@@ -51,7 +51,7 @@ rule blastn_classify:
         pident = config["blastn"]["pctidentity"],
         nseqs = config["blastn"]["ntargetseqs"]
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     log:
         "logs/{run}/blastn_classify_{sample}_{chunk}.log"
     benchmark:
@@ -80,7 +80,7 @@ rule blastn_aggregate:
         threads = config["blastn"]["threads"],
         alnlen = config["blastn"]["alnlength"]
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     log:
         "logs/{run}/blastn_aggregate_{sample}.log"
     benchmark:
@@ -98,21 +98,21 @@ rule blastn_aggregate:
 rule blast_tolca:
     input:
         blast = "classifications/{run}/blastn/{sample}.blastn.out",
-        db = "db/common/ref-taxonomy.txt"
+        db = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
         "classifications/{run}/blastn/{sample}.blastn.taxlist"
     threads: 1
     params:
         lcacons = config["blastn"]["lcaconsensus"]
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     log:
         "logs/{run}/blastn_tolca_{sample}.log"
     benchmark:
         "benchmarks/{run}/blastn_tolca_{sample}.txt"
     shell:
         """
-        scripts/tolca.py -b {input.blast} -t {input.db} \
+        {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -124,10 +124,10 @@ rule blastn_tomat:
         otumat = "classifications/{run}/blastn/{sample}.blastn.otumat"
     threads: 1
     conda:
-        config["blastn"]["environment"]
+        os.path.join(ENVDIR,config["blastn"]["environment"])
     log:
         "logs/{run}/blastn_tomat_{sample}.log"
     benchmark:
         "benchmarks/{run}/blastn_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -l {input} 2> {log}"
+        "{SRCDIR}/tomat.py -l {input} 2> {log}"

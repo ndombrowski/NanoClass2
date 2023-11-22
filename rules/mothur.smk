@@ -1,10 +1,10 @@
 rule mothur_build_db:
     input:
-        aln = "db/common/ref-seqs.aln",
-        tax = "db/common/ref-taxonomy.txt"
+        aln = os.path.join(DBPATH,"common/ref-seqs.aln"),
+        tax = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
-        aln = "db/mothur/ref-seqs.aln",
-        tax = "db/mothur/ref-taxonomy.txt"
+        aln = os.path.join(DBPATH,"mothur/ref-seqs.aln"),
+        tax = os.path.join(DBPATH,"mothur/ref-taxonomy.txt")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["mothur"]["dbmemory"]
@@ -13,7 +13,7 @@ rule mothur_build_db:
     benchmark:
         "benchmarks/mothur_build_db.txt"
     conda:
-        config["mothur"]["environment"]
+        os.path.join(ENVDIR,config["mothur"]["environment"])
     shell:
         """
         scripts/todb.py -s {input.aln} -t {input.tax} -m mothur \
@@ -23,7 +23,7 @@ rule mothur_build_db:
 rule mothur_classify:
     input:
         query = rules.prep_fasta_query.output,
-        aln = "db/mothur/ref-seqs.aln"
+        aln = os.path.join(DBPATH,"mothur/ref-seqs.aln")
     output:
         dir = temp(directory("classifications/{run}/mothur/{sample}/")),
         out = temp("classifications/{run}/mothur/{sample}.mothur.out")
@@ -34,7 +34,7 @@ rule mothur_classify:
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["mothur"]["memory"]
     conda:
-        config["mothur"]["environment"]
+        os.path.join(ENVDIR,config["mothur"]["environment"])
     log:
         "logs/{run}/mothur_classify_{sample}.log"
     benchmark:
@@ -55,7 +55,7 @@ rule mothur_classify:
 
 rule mothur_tomat:
     input:
-        tax = "db/mothur/ref-taxonomy.txt",
+        tax = os.path.join(DBPATH,"mothur/ref-taxonomy.txt"),
         out = "classifications/{run}/mothur/{sample}.mothur.out"
     output:
         taxlist = "classifications/{run}/mothur/{sample}.mothur.taxlist",
@@ -67,6 +67,6 @@ rule mothur_tomat:
     benchmark:
         "benchmarks/{run}/mothur_tomat_{sample}.txt"
     conda:
-        config["mothur"]["environment"]
+        os.path.join(ENVDIR,config["mothur"]["environment"])
     shell:
-        "scripts/tomat.py -b {input.out} -t {input.tax} 2> {log}"
+        "{SRCDIR}/tomat.py -b {input.out} -t {input.tax} 2> {log}"

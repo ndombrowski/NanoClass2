@@ -1,8 +1,8 @@
 rule dcmegablast_build_db:
     input:
-        "db/blastn/DB_BUILD"
+        os.path.join(DBPATH,"blastn/DB_BUILD")
     output:
-        touch("db/dcmegablast/DB_BUILD")
+        touch(os.path.join(DBPATH,"dcmegablast/DB_BUILD"))
 
 
 rule dcmegablast_chunk:
@@ -16,7 +16,7 @@ rule dcmegablast_chunk:
         n_chunks = config["dcmegablast"]["threads"],
         out_dir = "classifications/{run}/dcmegablast/{sample}"
     conda:
-        config["dcmegablast"]["environment"]
+        os.path.join(ENVDIR,config["dcmegablast"]["environment"])
     shell:
         """
         fasta-splitter --n-parts {params.n_chunks} {input} \
@@ -26,7 +26,7 @@ rule dcmegablast_chunk:
 rule dcmegablast_classify:
     input:
         rules.dcmegablast_build_db.output,
-        db = "db/common/ref-seqs.fna",
+        db = os.path.join(DBPATH,"common/ref-seqs.fna"),
         fasta = "classifications/{run}/dcmegablast/{sample}/{sample}.part-{chunk}.fasta"
     output:
         all = temp("classifications/{run}/dcmegablast/{sample}/{chunk}.dcmegablast.out")
@@ -38,7 +38,7 @@ rule dcmegablast_classify:
         pident = config["dcmegablast"]["pctidentity"],
         nseqs = config["blastn"]["ntargetseqs"]
     conda:
-        config["dcmegablast"]["environment"]
+        os.path.join(ENVDIR,config["dcmegablast"]["environment"])
     log:
         "logs/{run}/dcmegablast_classify_{sample}_{chunk}.log"
     benchmark:
@@ -68,7 +68,7 @@ rule dcmegablast_aggregate:
         threads = config["dcmegablast"]["threads"],
         alnlen = config["dcmegablast"]["alnlength"]
     conda:
-        config["dcmegablast"]["environment"]
+        os.path.join(ENVDIR,config["dcmegablast"]["environment"])
     log:
         "logs/{run}/dcmegablast_aggregate_{sample}.log"
     benchmark:
@@ -87,21 +87,21 @@ rule dcmegablast_aggregate:
 rule dcmegablast_tolca:
     input:
         blast = "classifications/{run}/dcmegablast/{sample}.dcmegablast.out",
-        db = "db/common/ref-taxonomy.txt"
+        db = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
         "classifications/{run}/dcmegablast/{sample}.dcmegablast.taxlist",
     threads: 1
     params:
         lcacons = config["dcmegablast"]["lcaconsensus"]
     conda:
-        config["dcmegablast"]["environment"]
+        os.path.join(ENVDIR,config["dcmegablast"]["environment"])
     log:
         "logs/{run}/dcmegablast_tolca_{sample}.log"
     benchmark:
         "benchmarks/{run}/dcmegablast_tolca_{sample}.txt"
     shell:
       	"""
-        scripts/tolca.py -b {input.blast} -t {input.db} \
+        {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -113,10 +113,10 @@ rule dcmegablast_tomat:
         otumat = "classifications/{run}/dcmegablast/{sample}.dcmegablast.otumat"
     threads: 1
     conda:
-        config["dcmegablast"]["environment"]
+        os.path.join(ENVDIR,config["dcmegablast"]["environment"])
     log:
         "logs/{run}/dcmegablast_tomat_{sample}.log"
     benchmark:
         "benchmarks/{run}/dcmegablast_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -l {input} 2> {log}"
+        "{SRCDIR}/tomat.py -l {input} 2> {log}"

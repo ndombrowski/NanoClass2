@@ -1,47 +1,42 @@
 rule centrifuge_get_db:
     input:
-        seq = "db/common/ref-seqs.fna",
-        tax = "db/common/ref-taxonomy.txt"
+        seq = os.path.join(DBPATH,"common/ref-seqs.fna"),
+        tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
     output:
-        name_table = "db/centrifuge/taxonomy/names.dmp",
-        tax_tree = "db/centrifuge/taxonomy/nodes.dmp",
-        tax_map = "db/centrifuge/ref-tax.map",
-        ref_seqs = "db/centrifuge/ref-seqs.fna",
-        ref_tax = "db/centrifuge/ref-taxonomy.txt"
+        name_table = os.path.join(DBPATH,"centrifuge/taxonomy/names.dmp"),
+        tax_tree = os.path.join(DBPATH,"centrifuge/taxonomy/nodes.dmp"),
+        tax_map = os.path.join(DBPATH,"centrifuge/ref-tax.map"),
+        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna"),
+        ref_tax = os.path.join(DBPATH,"centrifuge/ref-taxonomy.txt")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["centrifuge"]["dbmemory"]
     params:
         map_url = config["centrifuge"]["taxmapurl"]
     conda:
-        config["centrifuge"]["environment"]
+        os.path.join(ENVDIR,config["centrifuge"]["environment"])
     log:
         "logs/centrifuge_get_db.log"
     benchmark:
         "benchmarks/centrifuge_get_db.txt"
     shell:
         """
-        centrifuge-download -o db/centrifuge/taxonomy taxonomy > {log} 2>&1
+        centrifuge-download -o os.path.join(DBPATH,"/centrifuge/taxonomy) taxonomy > {log} 2>&1
         wget {params.map_url} -q -O - | gzip -d -c - | \
             awk '{{print $1\".\"$2\".\"$3\"\t\"$(NF)}}' \
             > {output.tax_map} 2>> {log}
-        scripts/todb.py -s {input.seq} -t {input.tax} -m centrifuge \
+        {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m centrifuge \
             -S {output.ref_seqs} -T {output.ref_tax} 2>> {log}
         """
 
 rule centrifuge_build_db:
     input:
-        ## the approach using kraken db only classifies 10% of reads
-        #name_table = "db/kraken/taxonomy/names.dmp",
-        #tax_tree = "db/kraken/taxonomy/nodes.dmp",
-        #conversion_table = "db/kraken/seqid2taxid.map",
-        #ref_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta"
-        name_table = "db/centrifuge/taxonomy/names.dmp",
-        tax_tree = "db/centrifuge/taxonomy/nodes.dmp",
-        conversion_table = "db/centrifuge/ref-tax.map",
-        ref_seqs = "db/centrifuge/ref-seqs.fna"
+        name_table = os.path.join(DBPATH,"centrifuge/taxonomy/names.dmp"),
+        tax_tree = os.path.join(DBPATH,"centrifuge/taxonomy/nodes.dmp"),
+        conversion_table = os.path.join(DBPATH,"centrifuge/ref-tax.map"),
+        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
     output:
-        touch("db/centrifuge/CENTRIFUGE_DB_BUILD")
+        touch(os.path.join(DBPATH,"/centrifuge/CENTRIFUGE_DB_BUILD"))
     threads:
         config["centrifuge"]["dbthreads"]
     resources:
@@ -49,7 +44,7 @@ rule centrifuge_build_db:
     params:
         prefix = "db/centrifuge/ref-db"
     conda:
-        config["centrifuge"]["environment"]
+        os.path.join(ENVDIR,config["centrifuge"]["environment"])
     log:
         "logs/centrifuge_build_db.log"
     benchmark:
@@ -69,7 +64,7 @@ rule centrifuge_classify:
     input:
         rules.centrifuge_build_db.output,
         fastq = get_seqfiletype,
-        ref_seqs = "db/centrifuge/ref-seqs.fna"
+        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
         #ref_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta"
     output:
         report = temp("classifications/{run}/centrifuge/{sample}.report.tsv"),
@@ -79,9 +74,9 @@ rule centrifuge_classify:
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["centrifuge"]["memory"]
     params:
-        index_prefix = "db/centrifuge/ref-db"
+        index_prefix = os.path.join(DBPATH,"centrifuge/ref-db")
     conda:
-        config["centrifuge"]["environment"]
+        os.path.join(ENVDIR,config["centrifuge"]["environment"])
     log:
         "logs/{run}/centrifuge_classify_{sample}.log"
     benchmark:
@@ -100,17 +95,17 @@ rule centrifuge_classify:
 rule centrifuge_tomat:
     input:
         out = "classifications/{run}/centrifuge/{sample}.centrifuge.out",
-        ref_seqs = "db/centrifuge/ref-seqs.fna"
+        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
     output:
         taxlist = "classifications/{run}/centrifuge/{sample}.centrifuge.taxlist",
         taxmat = "classifications/{run}/centrifuge/{sample}.centrifuge.taxmat",
         otumat = "classifications/{run}/centrifuge/{sample}.centrifuge.otumat"
     threads: 1
     conda:
-        config["centrifuge"]["environment"]
+        os.path.join(ENVDIR,config["centrifuge"]["environment"])
     log:
         "logs/{run}/centrifuge_tomat_{sample}.log"
     benchmark:
         "benchmarks/{run}/centrifuge_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -c {input.out} -f {input.ref_seqs} 2> {log}"
+        "{SRCDIR}/tomat.py -c {input.out} -f {input.ref_seqs} 2> {log}"

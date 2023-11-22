@@ -1,10 +1,10 @@
 rule spingo_build_db:
     input:
-        seq = "db/common/ref-seqs.fna",
-        tax = "db/common/ref-taxonomy.txt"
+        seq = os.path.join(DBPATH,"common/ref-seqs.fna"),
+        tax = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
-        seq = "db/spingo/ref-seqs.fna",
-        tax = "db/spingo/ref-taxonomy.txt"
+        seq = os.path.join(DBPATH,"spingo/ref-seqs.fna"),
+        tax = os.path.join(DBPATH,"spingo/ref-taxonomy.txt")
     threads:
         config["spingo"]["dbthreads"]
     resources:
@@ -14,10 +14,10 @@ rule spingo_build_db:
     benchmark:
         "benchmarks/spingo_db.txt"
     conda:
-        config["spingo"]["environment"]
+        os.path.join(ENVDIR,config["spingo"]["environment"])
     shell:
         """
-        scripts/todb.py -s {input.seq} -t {input.tax} -m spingo \
+        {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m spingo \
             -S {output.seq} -T {output.tax} 2> {log}
         spindex -k 8 -p {threads} -d {output.seq} 2>> {log}
         """
@@ -25,7 +25,7 @@ rule spingo_build_db:
 
 rule spingo_classify:
     input:
-        db = "db/spingo/ref-seqs.fna",
+        db = os.path.join(DBPATH,"spingo/ref-seqs.fna"),
         fasta = rules.prep_fasta_query.output
     output:
         out = "classifications/{run}/spingo/{sample}.spingo.taxlist",
@@ -35,7 +35,7 @@ rule spingo_classify:
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["spingo"]["memory"]
     conda:
-        config["spingo"]["environment"]
+        os.path.join(ENVDIR,config["spingo"]["environment"])
     log:
         "logs/{run}/spingo_classify_{sample}.log"
     benchmark:
@@ -63,10 +63,10 @@ rule spingo_tomat:
         otumat = "classifications/{run}/spingo/{sample}.spingo.otumat"
     threads: 1
     conda:
-        config["spingo"]["environment"]
+        os.path.join(ENVDIR,config["spingo"]["environment"])
     log:
         "logs/{run}/spingo_tomat_{sample}.log"
     benchmark:
         "benchmarks/{run}/spingo_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -l {input.list} 2> {log}"
+        "{SRCDIR}/tomat.py -l {input.list} 2> {log}"
