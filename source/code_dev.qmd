@@ -1,0 +1,83 @@
+---
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-location: left
+
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    toc-depth: 4
+    #pdf-engine: pdflatex
+    fig-width: 3.5
+    fig-height: 3.5
+    geometry:
+      - top=25mm
+    #  - right=20mm
+    #  - left=10mm
+      - bottom=20mm
+    #  - textwidth=4.5in
+      - heightrounded
+    highlight-style: github
+    pandoc_args: --listings
+    header-includes:
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+        \DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+    colorlinks: true
+    code-block-bg: D3D3D3
+
+execute:
+  eval: false
+
+engine: knitr
+---
+
+
+## Notes on code development
+
+### Test-run
+
+#### Setup
+
+```{bash}
+wdir="/home/ndombro/personal/testing"
+cd $wdir
+
+#setup snakemake env
+#mamba create -c conda-forge -c bioconda -n snakemake_nanoclass python=3.9.7 snakemake=6.8.0 tabulate=0.8
+
+conda activate snakemake_nanoclass
+```
+
+
+#### Prep config
+
+```{bash}
+mkdir input
+
+#get config 
+cp ~/personal/snakemake_workflows/NanoClass2/config.yaml .
+
+#cp batch script
+cp ~/personal/snakemake_workflows/NanoClass2/jobscript.sh .
+
+#get mapping file
+cp ~/personal/snakemake_workflows/NanoClass2/example_files/mapping.csv .
+```
+
+Edits:
+
+- config.yaml:
+  - Change path to mapping.csv to `mapping.csv`
+- Changes to mapping.csv:
+  - Change `$PWD` to `/home/ndombro//personal/snakemake_workflows/NanoClass2/example_files/` 
+- jobscript.sh
+  - Change line with snakmake command to `cmd="srun --cores $SLURM_CPUS_ON_NODE  snakemake -s ~/personal/snakemake_workflows/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix ~/personal/snakemake_workflows/NanoClass2/.snakemake/conda --cores $SLURM_CPUS_ON_NODE --nolock --rerun-incomplete"`
+
+
+```{bash}
+#dry run
+srun --cores 1 snakemake -s ~/personal/snakemake_workflows/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix ~/personal/snakemake_workflows/NanoClass2/.snakemake/conda --cores 1 --nolock --rerun-incomplete -np
+```

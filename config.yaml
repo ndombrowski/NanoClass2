@@ -1,0 +1,135 @@
+samples:                           "example_files/mapping.csv"
+methods:                           ["minimap"]
+output_dir:                         "results"
+db_path:                           "db"
+
+porechop:
+    environment:                   "preprocess.yml"
+    threads:                       16
+    memory:                        4000
+    checkreads:                    20000 
+
+nanofilt:
+    environment:                   "preprocess.yml"
+    memory:                        2000
+    minlen:                        1400
+    maxlen:                        1600
+    quality:                       10
+
+subsample:
+    skip:                          false
+    samplesize:                    100
+    environment:                   "preprocess.yml"
+
+nanostats:
+    environment:                   "preprocess.yml"
+    threads:                       2
+    memory:                        8000
+
+nanoplot:
+    environment:                   "preprocess.yml"
+    memory:                        4000
+    downsample:                    0
+
+common:
+    environment:                   "R4.0.yml"
+    dburl:                         "https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip"
+    ssu:                           "16S" #16S or 18S
+    dbmemory:                      4000
+    group-by:                      sample
+
+blastn:
+    environment:                   "blast.yml"
+    threads:                       10
+    memory:                        500
+    lcaconsensus:                  0.5
+    evalue:                        0.00001
+    pctidentity:                   80
+    alnlength:                     100
+    ntargetseqs:                   50
+
+centrifuge:
+    environment:                   "centrifuge.yml"
+    taxmapurl:                     "https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/taxonomy/taxmap_embl_ssu_ref_nr99_132.txt.gz"
+    sequrl:                        "https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/SILVA_132_SSURef_Nr99_tax_silva.fasta.gz"
+    dbthreads:                     4
+    dbmemory:                      500
+    threads:                       1
+    memory:                        16000
+
+dcmegablast:
+    environment:                   "blast.yml"
+    threads:                       10
+    memory:                        500
+    lcaconsensus:                  0.5
+    evalue:                        0.00001
+    pctidentity:                   80
+    alnlength:                     100
+    ntargetseqs:                   50
+
+idtaxa:
+    environment:                   "R4.0.yml"
+    dbmemory:                      3000
+    threads:                       8
+    memory:                        10000
+    pctthreshold:                  60
+
+kraken:
+    environment:                   "kraken2.yml"
+    dbtype:                        "silva"
+    dbthreads:                     8
+    dbmemory:                      1000
+    threads:                       16
+    memory:                        500
+
+mapseq:
+    threads:                       1
+    memory:                        1000
+
+megablast:
+    environment:                   "blast.yml"
+    threads:                       10
+    memory:                        500
+    lcaconsensus:                  0.5
+    evalue:                        0.00001
+    pctidentity:                   80
+    alnlength:                     100
+    ntargetseqs:                   50
+
+minimap:
+    environment:                   "minimap2.yml"
+    dbmemory:                      3000
+    threads:                       16
+    memory:                        50000
+    lcaconsensus:                  0.5
+    ntargetseqs:                   10
+
+mothur:
+    environment:                   "mothur.yml"
+    dbmemory:                      1000
+    threads:                       8
+    memory:                        20000
+
+qiime:
+    environment:                   "qiime2.yml"
+    dbmemory:                      3000
+    threads:                       16
+    memory:                        10000
+    lcaconsensus:                  0.51
+    pctidentity:                   0.8
+    ntargetseqs:                   10
+
+rdp:
+    environment:                   "R4.0.yml"
+    dbmemory:                      75000
+    threads:                       8
+    memory:                        5000
+    pctthreshold:                  60
+
+spingo:
+    environment:                   "spingo.yml"
+    dbthreads:                     16
+    dbmemory:                      50000
+    threads:                       16
+    memory:                        50000
+

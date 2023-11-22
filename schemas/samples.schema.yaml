@@ -1,0 +1,22 @@
+$schema:              "http://json-schema.org/draft-07/schema#"
+
+description:          an entry in the sample sheet
+properties:
+    run:
+        type:         string
+        description:  ID for the nanopore run. Can contain multiple sample IDs.
+    sample:
+        type:         string
+        description:  Sample ID for individual sample.
+    barcode:
+        type:         string
+        pattern:      "BC[0-1][0-9]"
+        description:  Nanopore barcode number used if multiplexed.
+    path:
+        type:         string
+        description:  Path to input file in fastq.gz format. If path is within NanoClass directory and project is under git control it can easily be archived. 
+
+required:
+    - run
+    - sample
+    - path

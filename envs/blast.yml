@@ -1,0 +1,12 @@
+name: blast
+channels:
+  - bioconda
+  - defaults
+  - conda-forge
+dependencies:
+  - coreutils
+  - grep
+  - gawk
+  - python=3.8.5
+  - blast=2.10.1
+  - fasta-splitter

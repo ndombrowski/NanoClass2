@@ -1,0 +1,19 @@
+name: R4.0
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.9.7
+  - r-essentials
+  - r-base
+  - r-rlang=1.0.5
+  - r=4.0
+  - bioconductor-phyloseq
+  - bioconductor-dada2
+  - r-seqinr
+  - bioconductor-decipher
+  - r-vroom
+  - pip
+  - pip:
+    - biopython==1.78

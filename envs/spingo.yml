@@ -1,0 +1,13 @@
+name: spingo
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - spingo=1.3
+  - gawk
+  - sed
+  - pip
+  - pip:
+    - biopython==1.78
+
