@@ -1,0 +1,40 @@
+---
+execute:
+  eval: false
+
+engine: knitr
+bibliography: references.bib
+---
+
+# References
+
+The version numbers are the exact versions used to develop this workflow.
+
+-   Snakemake v6.8.0 [@mölder2021]
+-   Python v3.9.7
+    -   numpy v1.26.2
+    -   tabulate v0.8
+    -   biopython==1.78
+-   R v4.0
+    -   r-rlang v1.0.5
+    -   r-base v4.0.5
+    -   r-essentials v1.7.0
+    -   phyloseq v1.34 [@mcmurdie2013]
+    -   dada2 v1.18.0
+    -   seqinr v4.2_16
+    -   decipher v2.18.1
+    -   r-vroom v1.5.7
+-   Porechop v0.2.4
+-   NanoFilt v2.7.1
+-   NanoStat v1.4.0
+-   seqtk v1.3
+-   Pistis v0.3.3
+-   blast v2.10.1
+-   fasta-splitter v0.2.6
+-   minimap2 v2.17 [@li2018]
+-   samtools v1.10
+-   centrifuge v1.0.4_beta
+-   mothur v1.44
+-   kraken2 v2.0.8_beta
+-   qiime2 v2020.8
+-   spingo=1.3

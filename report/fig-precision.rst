@@ -1,0 +1,1 @@
+The precision per tool for each sample. For each taxonomic level, precision is defined as the proportion of NanoPore reads for which the classification was in aggreement with the majority consensus classification of all tools combined. 

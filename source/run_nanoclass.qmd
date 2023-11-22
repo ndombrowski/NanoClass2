@@ -1,0 +1,142 @@
+---
+execute:
+  eval: false
+
+engine: knitr
+---
+
+# Running NanoClass2
+
+NanoClass2 will take de-multiplexed and compressed fastq files as input and generate OTU tables and several summary statistics as output.   
+
+To run NanoClass2 please, provide a single fastq.gz file per sample.
+
+If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. NanoClass2 allows to test this by subsampling your dataset and running all 11 classification tools on this smaller subsample. Test on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run these tools on your entire dataset.
+
+## Edit the configuration file
+
+In the configuration file, also called config.yaml, you can specify how NanoClass2 should be run.
+
+To change the default settings and tell Snakemake where your data is located copy the `config.yaml` file found in the NanoClass2 folder to the folder in which you want to analyse your data, i.e. like this:
+
+```{bash}
+cp <path_to_NanoClass2_folder>.config.yaml .
+```
+
+You can of course run your analyses in NanoITS folder you downloaded, but often its easier to separate software from analyses.
+
+Next, open the config.yaml with an editor, such as nano. There are several things you can modify:
+
+**1. The samples you want to analyse**
+
+Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: `samples_file: "example_files/mapping.csv"`. You can provide the relative path (i.e. relative to the working directory you start the snakemake workflow in) or absolute path (i.e. the location of a file or directory from the root directory(/))
+
+This file needs to contain the following columns:
+
+0. `run`: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings.
+1. `sample`: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.
+2. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now
+3. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
+
+An example file could look like this (exchange <path> with the location of your samples):
+
+```
+run,sample,barcode,path
+demo,R1A,BC01,<path>/barcode01_merged.fastq.gz
+demo,R2A,BC02,<path>/barcode02_merged.fastq.gz
+demo,R3A,BC03,<path>/barcode03_merged.fastq.gz
+```
+
+**2. The classifiers you want to use**
+
+You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can keep use the full list.
+
+
+**3. Subsampling our reads**
+
+::: {.callout-important}
+
+In this section, we can specify whether we would like to subset the number of reads and how many reads per sample you like to include. This allows us to run NanoClass2 in two modes:
+
+1. With subsampling: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting using `skip: false` in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples, to speed up the analysis.
+2. Without subsampling: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using `skip: true` in the subsample section of the yaml file.
+:::
+
+In the example below subsample is enabled and 100 random reads per sample will be included in the analyses. 
+
+```
+subsample:
+    skip:                          false
+    samplesize:                    100
+    environment:                   "preprocess.yml"
+```
+
+In this example below we disable subsampling and analyse all our reads. 
+
+```
+subsample:
+    skip:                          true
+```
+
+**4. Other settings**
+
+Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `nanofilt`).
+
+
+## Running NanoClass2
+
+### Dry-run
+
+To test whether the workflow is defined properly do a dry-run first. To do this, change part of the snakemake command as follows:
+
+1. Provide the path to where you installed NanoITS afer `--s`
+2.  Provide the path to the edited config file after `--configfile`
+3. Provide the path to where you want snakemake to install all program dependencies after `--conda-prefix`. We recommend to install these into the folder in which you downloaded NanoITS but you can change this if desired
+
+```{bash}
+#activate conda environment with your snakemake installation, i.e. 
+mamba activate snakemake_nanoclass
+
+#perform a dry-run
+snakemake --cores 1 \
+    -s <path_to_NanoClass2_install>/Snakefile \
+    --configfile config.yaml \
+    --use-conda --conda-prefix <path_to_NanoClass2_install>/.snakemake/conda \
+    --nolock --rerun-incomplete -np
+```
+
+### Run NanoClass2 interactively
+
+If the dry-run was successful you can run snakemake interactively with the following command. Adjust the cores according to your system.
+
+```{bash}
+snakemake --cores 1 \
+    -s <path_to_NanoClass2_install>/Snakefile \
+    --configfile config.yaml \
+    --use-conda --conda-prefix <path_to_NanoClass2_install>/.snakemake/conda \
+    --nolock --rerun-incomplete
+```
+
+
+### Generate a report
+
+After a successful run, you can create a report with some of the key output files as follows:
+
+```{bash}
+snakemake --report report.html \
+  --configfile config.yaml \
+  -s <path_to_NanoITS_install>/Snakefile
+```
+
+The report includes:
+
+- A shematic of the steps executed
+- A PDF containing information about the reads after quality filtering. To view the full report, download the file/
+- Taxonomic bargraphs for different taxonomic ranks (and classifiers if more than one was used)
+- Information about the run-times for each sample and statistics on the runtimes for each tool/sample
+
+Additionally, the output folder contains:
+
+- `<output_dir>/data/<run>/nanofilt: The filtered reads (useful if you want to do something else with these reads)
+- `<output_dir>/classifications/<run>/<method>`: The OTU matrix for each sample and classifier
+- `<output_dir>/tables: OTU and taxonomy tables combined for each sample and classifier used

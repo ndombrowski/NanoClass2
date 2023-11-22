@@ -1,0 +1,39 @@
+---
+execute:
+  eval: false
+
+engine: knitr
+---
+
+# Installation
+
+## Install conda/mamba
+
+To be able to run this workflow you need conda or mamba installed. If you do not have either of these installed, check out the installation instruction for [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html). Since July 2023 conda comes with mamba installed and should be available when [updating conda to v23.10.0](https://docs.anaconda.com/free/anaconda/install/update-version/).
+
+If you only want to install mamba, follow the instructions found [here](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html).
+
+
+## Install snakemake
+
+This workflow was developed using snakemake v6.8.0 and python3.9.7 and you might run into problems when using different version, which is why we recommend installing snakemake as follows:
+
+```{bash}
+mamba create -c conda-forge -c bioconda -n snakemake_nanoclass python=3.9.7 snakemake=6.8.0 tabulate=0.8
+```
+
+
+## Install NanoITS
+
+NanoClass can be installed via [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) as follows:
+
+```{bash}
+git clone https://github.com/ndombrowski/NanoClass2.git
+```
+
+If you don't have or want to install git, you can also download NanoClass as follows>
+
+1. Go to <https://github.com/ndombrowski/NanoClass2>
+2. Click the green code button
+3. Download zip
+4. Extract zip

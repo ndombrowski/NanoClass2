@@ -3,6 +3,13 @@ methods:                           ["minimap"]
 output_dir:                         "results"
 db_path:                           "db"
 
+
+subsample:
+    skip:                          false
+    samplesize:                    100
+    environment:                   "preprocess.yml"
+
+
 porechop:
     environment:                   "preprocess.yml"
     threads:                       16
@@ -15,11 +22,6 @@ nanofilt:
     minlen:                        1400
     maxlen:                        1600
     quality:                       10
-
-subsample:
-    skip:                          false
-    samplesize:                    100
-    environment:                   "preprocess.yml"
 
 nanostats:
     environment:                   "preprocess.yml"

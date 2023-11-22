@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "!Readme.md"
+    - "!source/documentation.qmd"
+
+website:
+  title: "NanoClass2"
+  repo-url: https://github.com/ScienceParkStudyGroup/software_information/
+  repo-actions: [source, issue]
+  page-navigation: true
+  sidebar: 
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - source/installation_instructions.qmd
+      - source/run_nanoclass.qmd
+      - source/references.qmd
+  page-footer:
+    center: |
+      Copyright 2023, Nina Dombrowski  
+      Last modified: {{< meta date >}} 
+
+format:
+  html:
+    theme:
+      light: lumen
+      dark: cyborg
+    date: last-modified
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+
+
+execute:
+  eval: false
+
+
+engine: knitr
+
+
