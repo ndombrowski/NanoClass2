@@ -180,6 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#dry-run" id="toc-dry-run" class="nav-link" data-scroll-target="#dry-run">Dry-run</a></li>
   <li><a href="#run-nanoclass2-interactively" id="toc-run-nanoclass2-interactively" class="nav-link" data-scroll-target="#run-nanoclass2-interactively">Run NanoClass2 interactively</a></li>
+  <li><a href="#using-nanoclass2-with-different-databases" id="toc-using-nanoclass2-with-different-databases" class="nav-link" data-scroll-target="#using-nanoclass2-with-different-databases">Using NanoClass2 with different databases</a></li>
   <li><a href="#generate-a-report" id="toc-generate-a-report" class="nav-link" data-scroll-target="#generate-a-report">Generate a report</a></li>
   </ul></li>
   </ul></li>
@@ -299,6 +300,10 @@ Warning
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--use-conda</span> <span class="at">--conda-prefix</span> <span class="op">&lt;</span>path_to_NanoClass2_install<span class="op">&gt;</span>/.snakemake/conda <span class="dt">\</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--nolock</span> <span class="at">--rerun-incomplete</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="using-nanoclass2-with-different-databases" class="level3">
+<h3 class="anchored" data-anchor-id="using-nanoclass2-with-different-databases">Using NanoClass2 with different databases</h3>
+<p>NanoClass2 was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare the UNITE database for ITS amplicon sequences, as well as custom databases is provided on the <a href="https://ejongepier.github.io/NanoClass/databases.html">following website</a>.</p>
 </section>
 <section id="generate-a-report" class="level3">
 <h3 class="anchored" data-anchor-id="generate-a-report">Generate a report</h3>
