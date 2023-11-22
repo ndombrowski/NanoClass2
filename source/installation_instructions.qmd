@@ -31,7 +31,7 @@ NanoClass can be installed via [git](https://git-scm.com/book/en/v2/Getting-Star
 git clone https://github.com/ndombrowski/NanoClass2.git
 ```
 
-If you don't have or want to install git, you can also download NanoClass as follows>
+If you don't have or want to install git, you can also download NanoClass as follows:
 
 1. Go to <https://github.com/ndombrowski/NanoClass2>
 2. Click the green code button

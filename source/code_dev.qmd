@@ -37,6 +37,11 @@ engine: knitr
 
 ## Notes on code development
 
+To do:
+
+- Add comment about: ) when building the environments I had the issue as pointed out here: https://forum.qiime2.org/t/qiime-2-2023-9-installation-issue/27925 If conda solver rules are set to "strict", it will create a conflict between mamba and libmamba (if I understand correctly) which returns a failed environment solving for Qiime2. This happens with the latest version of  Qiime2 only and I think this will be patched. The only problem I see is that I had to set the solver rules to "flexible" to build the environments and it didn't seem to cause problems down the line but I can't be sure about it.
+
+
 ### Test-run
 
 #### Setup
@@ -79,5 +84,18 @@ Edits:
 
 ```{bash}
 #dry run
-srun --cores 1 snakemake -s ~/personal/snakemake_workflows/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix ~/personal/snakemake_workflows/NanoClass2/.snakemake/conda --cores 1 --nolock --rerun-incomplete -np
+snakemake -s ~/personal/snakemake_workflows/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix ~/personal/snakemake_workflows/NanoClass2/.snakemake/conda --cores 1 --nolock --rerun-incomplete -np
 ```
+
+Get report:
+
+```{bash}
+snakemake --report report.html \
+  --configfile config.yaml \
+  -s ~/personal/snakemake_workflows/NanoClass2/Snakefile
+```
+
+
+Notice:
+
+- preprocess runs fine with Python 3.10.13

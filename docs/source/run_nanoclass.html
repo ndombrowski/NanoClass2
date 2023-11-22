@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Running NanoClass2</h1>
 <p>NanoClass2 will take de-multiplexed and compressed fastq files as input and generate OTU tables and several summary statistics as output.</p>
 <p>To run NanoClass2 please, provide a single fastq.gz file per sample.</p>
-<p>If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. NanoClass2 allows to test this by subsampling your dataset and running all 11 classification tools on this smaller subsample. Test on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run these tools on your entire dataset.</p>
+<p>If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. You can do this by first subsampling your dataset and running all 11 classification tools on this smaller subsample. Tests on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run this tool on your entire dataset.</p>
 <section id="edit-the-configuration-file" class="level2">
 <h2 class="anchored" data-anchor-id="edit-the-configuration-file">Edit the configuration file</h2>
 <p>In the configuration file, also called config.yaml, you can specify how NanoClass2 should be run.</p>
@@ -209,9 +209,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>. You can provide the relative path (i.e.&nbsp;relative to the working directory you start the snakemake workflow in) or absolute path (i.e.&nbsp;the location of a file or directory from the root directory(/))</p>
 <p>This file needs to contain the following columns:</p>
 <ol start="0" type="1">
-<li><code>run</code>: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings.</li>
+<li><code>run</code>: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.</li>
 <li><code>sample</code>: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.</li>
-<li><code>barcode</code>: The barcode ID. Can be empty as it is not actively used in the workflow as of now</li>
+<li><code>barcode</code>: The barcode ID. Can be empty as it is not actively used in the workflow as of now.</li>
 <li><code>path</code>: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.</li>
 </ol>
 <p>An example file could look like this (exchange <path> with the location of your samples):</path></p>
@@ -220,7 +220,7 @@ demo,R1A,BC01,&lt;path&gt;/barcode01_merged.fastq.gz
 demo,R2A,BC02,&lt;path&gt;/barcode02_merged.fastq.gz
 demo,R3A,BC03,&lt;path&gt;/barcode03_merged.fastq.gz</code></pre>
 <p><strong>2. The classifiers you want to use</strong></p>
-<p>You can choose what classifiers you want to use in <code>methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]</code>. If you want to first compare different classifiers you can keep use the full list.</p>
+<p>You can choose what classifiers you want to use in <code>methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]</code>. If you want to first compare different classifiers you can use the full list.</p>
 <p><strong>3. Subsampling our reads</strong></p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -234,8 +234,8 @@ Important
 <div class="callout-body-container callout-body">
 <p>In this section, we can specify whether we would like to subset the number of reads and how many reads per sample you like to include. This allows us to run NanoClass2 in two modes:</p>
 <ol type="1">
-<li>With subsampling: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting using <code>skip: false</code> in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples, to speed up the analysis.</li>
-<li>Without subsampling: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using <code>skip: true</code> in the subsample section of the yaml file.</li>
+<li><strong>With subsampling</strong>: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting <code>skip: false</code> in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples in order to speed up the analysis.</li>
+<li><strong>Without subsampling</strong>: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using <code>skip: true</code> in the subsample section of the yaml file.</li>
 </ol>
 </div>
 </div>
@@ -244,9 +244,11 @@ Important
     skip:                          false
     samplesize:                    100
     environment:                   "preprocess.yml"</code></pre>
-<p>In this example below we disable subsampling and analyse all our reads.</p>
+<p>In this example we disable subsampling and analyse all our reads.</p>
 <pre><code>subsample:
-    skip:                          true</code></pre>
+    skip:                          true
+    samplesize:                    100
+    environment:                   "preprocess.yml"</code></pre>
 <p><strong>4. Other settings</strong></p>
 <p>Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in <code>nanofilt</code>).</p>
 </section>
@@ -254,7 +256,7 @@ Important
 <h2 class="anchored" data-anchor-id="running-nanoclass2-1">Running NanoClass2</h2>
 <section id="dry-run" class="level3">
 <h3 class="anchored" data-anchor-id="dry-run">Dry-run</h3>
-<p>To test whether the workflow is defined properly do a dry-run first. To do this, change part of the snakemake command as follows:</p>
+<p>To test whether the workflow is defined properly do a dry-run first. In the command, do the following changes:</p>
 <ol type="1">
 <li>Provide the path to where you installed NanoITS afer <code>--s</code></li>
 <li>Provide the path to the edited config file after <code>--configfile</code></li>
@@ -275,6 +277,21 @@ Important
 <section id="run-nanoclass2-interactively" class="level3">
 <h3 class="anchored" data-anchor-id="run-nanoclass2-interactively">Run NanoClass2 interactively</h3>
 <p>If the dry-run was successful you can run snakemake interactively with the following command. Adjust the cores according to your system.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. For now we recommend setting the channel priorities to flexible to not run into issue when installing software dependencies.</p>
+<p>You can check your channel priorities in <code>~/.condarc</code> (Linux-environment)</p>
+<p>You can reset the channel priorities with <code>conda config --set channel_priority flexible</code>.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">--cores</span> 1 <span class="dt">\</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">-s</span> <span class="op">&lt;</span>path_to_NanoClass2_install<span class="op">&gt;</span>/Snakefile <span class="dt">\</span></span>
@@ -300,9 +317,9 @@ Important
 </ul>
 <p>Additionally, the output folder contains:</p>
 <ul>
-<li>`<output_dir>/data/<run>/nanofilt: The filtered reads (useful if you want to do something else with these reads)</run></output_dir></li>
+<li><code>&lt;output_dir&gt;/data/&lt;run&gt;/nanofilt</code>: The filtered reads (useful if you want to do something else with these reads)</li>
 <li><code>&lt;output_dir&gt;/classifications/&lt;run&gt;/&lt;method&gt;</code>: The OTU matrix for each sample and classifier</li>
-<li>`<output_dir>/tables: OTU and taxonomy tables combined for each sample and classifier used</output_dir></li>
+<li><code>&lt;output_dir&gt;/tables</code>: OTU and taxonomy tables combined for each sample and classifier used</li>
 </ul>
 
 

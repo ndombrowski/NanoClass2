@@ -11,7 +11,7 @@ NanoClass2 will take de-multiplexed and compressed fastq files as input and gene
 
 To run NanoClass2 please, provide a single fastq.gz file per sample.
 
-If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. NanoClass2 allows to test this by subsampling your dataset and running all 11 classification tools on this smaller subsample. Test on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run these tools on your entire dataset.
+If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. You can do this by first subsampling your dataset and running all 11 classification tools on this smaller subsample. Tests on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run this tool on your entire dataset.
 
 ## Edit the configuration file
 
@@ -33,9 +33,9 @@ Here, you need to provide the path to a comma-separated mapping file that descri
 
 This file needs to contain the following columns:
 
-0. `run`: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings.
+0. `run`: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.
 1. `sample`: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.
-2. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now
+2. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now.
 3. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
 
 An example file could look like this (exchange <path> with the location of your samples):
@@ -49,7 +49,7 @@ demo,R3A,BC03,<path>/barcode03_merged.fastq.gz
 
 **2. The classifiers you want to use**
 
-You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can keep use the full list.
+You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can use the full list.
 
 
 **3. Subsampling our reads**
@@ -58,8 +58,8 @@ You can choose what classifiers you want to use in `methods: ["blastn","centrifu
 
 In this section, we can specify whether we would like to subset the number of reads and how many reads per sample you like to include. This allows us to run NanoClass2 in two modes:
 
-1. With subsampling: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting using `skip: false` in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples, to speed up the analysis.
-2. Without subsampling: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using `skip: true` in the subsample section of the yaml file.
+1. **With subsampling**: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting `skip: false` in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples in order to speed up the analysis.
+2. **Without subsampling**: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using `skip: true` in the subsample section of the yaml file.
 :::
 
 In the example below subsample is enabled and 100 random reads per sample will be included in the analyses. 
@@ -71,11 +71,13 @@ subsample:
     environment:                   "preprocess.yml"
 ```
 
-In this example below we disable subsampling and analyse all our reads. 
+In this example we disable subsampling and analyse all our reads. 
 
 ```
 subsample:
     skip:                          true
+    samplesize:                    100
+    environment:                   "preprocess.yml"
 ```
 
 **4. Other settings**
@@ -87,7 +89,7 @@ Finally, you can change tool specific parameters: If desired, there are several 
 
 ### Dry-run
 
-To test whether the workflow is defined properly do a dry-run first. To do this, change part of the snakemake command as follows:
+To test whether the workflow is defined properly do a dry-run first. In the command, do the following changes:
 
 1. Provide the path to where you installed NanoITS afer `--s`
 2.  Provide the path to the edited config file after `--configfile`
@@ -108,6 +110,16 @@ snakemake --cores 1 \
 ### Run NanoClass2 interactively
 
 If the dry-run was successful you can run snakemake interactively with the following command. Adjust the cores according to your system.
+
+::: {.callout-warning}
+
+When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. For now we recommend setting the channel priorities to flexible to not run into issue when installing software dependencies.
+
+You can check your channel priorities in `~/.condarc` (Linux-environment)
+
+You can reset the channel priorities with `conda config --set channel_priority flexible`.
+:::
+
 
 ```{bash}
 snakemake --cores 1 \
@@ -137,6 +149,6 @@ The report includes:
 
 Additionally, the output folder contains:
 
-- `<output_dir>/data/<run>/nanofilt: The filtered reads (useful if you want to do something else with these reads)
+- `<output_dir>/data/<run>/nanofilt`: The filtered reads (useful if you want to do something else with these reads)
 - `<output_dir>/classifications/<run>/<method>`: The OTU matrix for each sample and classifier
-- `<output_dir>/tables: OTU and taxonomy tables combined for each sample and classifier used
+- `<output_dir>/tables`: OTU and taxonomy tables combined for each sample and classifier used
