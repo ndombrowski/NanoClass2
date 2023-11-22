@@ -8,7 +8,7 @@ project:
 
 website:
   title: "NanoClass2"
-  repo-url: https://github.com/ScienceParkStudyGroup/software_information/
+  repo-url: https://github.com/ndombrowski/NanoClass2
   repo-actions: [source, issue]
   page-navigation: true
   sidebar: 
