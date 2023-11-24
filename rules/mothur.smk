@@ -43,11 +43,15 @@ rule mothur_classify:
         """
         mkdir -p {output.dir}
         cp {input} {output.dir}
+        
         queryf=$(basename {input.query})
         alnf=$(basename {input.aln})
+        
         echo \"align.seqs(candidate={output.dir}/$queryf, template={output.dir}/$alnf, \
             processors={threads}, ksize=6, align=needleman); -q\" > {output.dir}/mothur.cmd
+        
         mothur {output.dir}/mothur.cmd 2> {log}
+        
         awk -F '\\t' -v OFS='\\t' '{{if (NR==1) printf "%s","#"; print $1, $3}}' \
           {output.dir}/{params.file} > {output.out} 2>> {log} 
         """

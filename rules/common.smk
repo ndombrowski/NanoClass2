@@ -1,7 +1,8 @@
 rule common_download_db:
     output:
         ref_tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
-        ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
+        ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna"),
+        aln = os.path.join(DBPATH,"common/ref-seqs.aln")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["common"]["dbmemory"]
@@ -23,6 +24,7 @@ rule common_download_db:
         wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta.gz
         wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_{params.ssu}_138.1.txt.gz
         wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_{params.ssu}_138.1.acc_taxid.gz
+        wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva_full_align_trunc.fasta.gz
 
         gzip -d {DBPATH}/common/*gz
 
@@ -31,7 +33,11 @@ rule common_download_db:
 
         mv names.dmp nodes.dmp {DBPATH}/common/taxonomy
         mv {DBPATH}/common/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta {DBPATH}/common/tax_slv_{params.ssu}_138.1.txt {DBPATH}/common/data 
-        mv  {DBPATH}/common/tax_slv_{params.ssu}_138.1.acc_taxid {DBPATH}/common/seqid2taxid.map
+        mv {DBPATH}/common/tax_slv_{params.ssu}_138.1.acc_taxid {DBPATH}/common/seqid2taxid.map
+
+        #cleanup aln
+        cut -f1 -d " " {DBPATH}/common/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva_full_align_trunc.fasta > {DBPATH}/common/ref-seqs.aln
+        rm {DBPATH}/common/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva_full_align_trunc.fasta
 
         #clean U 
         sed -e '/^>/!y/U/T/' {DBPATH}/common/data/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta | cut -f1 -d " " > {DBPATH}/common/ref-seqs.fna

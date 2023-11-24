@@ -14,10 +14,7 @@ format:
     fig-height: 3.5
     geometry:
       - top=25mm
-    #  - right=20mm
-    #  - left=10mm
       - bottom=20mm
-    #  - textwidth=4.5in
       - heightrounded
     highlight-style: github
     pandoc_args: --listings
@@ -39,13 +36,60 @@ engine: knitr
 
 To do:
 
-- kraken: use newer version, as default version runs into an error when downloading db
-- Check run for `non-zero` errors as well as "error"
+- Make all classifiers work with new silva db
+- check cutoffs for:
+  - kraken
+  - minimap
 
 Kraken two downloads:
 
 - SILVA_138.1_SSURef_NR99_tax_silva.fasta
 -  tax_slv_ssu_138.1.txt
+
+
+Tested classifiers:
+
+- kraken, runs
+- minimap, runs
+- blastn, runs
+- dcmegablast, runs
+- megablast, runs
+- rdp, running
+- spingo, running
+- idtaxa, running
+- mothur, needs aln --> change common
+- qiime, should work as is
+- centrifuge, change mapurls
+
+
+https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva_full_align_trunc.fasta.gz
+
+https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_tax_silva_full_align_trunc.fasta.gz
+
+
+Centrifuge:
+
+default path: https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/taxonomy/taxmap_embl_ssu_ref_nr99_132.txt.gz
+default content:
+
+AC200763        88363   89885   Bacteria;Proteobacteria
+
+parsed default content:
+
+AC200763.88363.89885    138073
+AC201869.46386.47908    138073
+
+
+
+
+
+```{bash}
+#wget https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/taxonomy/taxmap_embl_ssu_ref_nr99_132.txt.gz -q -O - | gzip -d -c - | awk '{print $1\".\"$2\".\"$3\"\t\"$(NF)}' > test_default.txt
+
+wget https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/taxonomy/taxmap_embl_ssu_ref_nr99_132.txt.gz -q -O - | gzip -d -c - | awk '{print $1"."$2"."$3"\t"$(NF)}' > test_default.txt
+
+
+```
 
 
 ## Dry run getting a tax map
@@ -54,6 +98,10 @@ The issue is that
 
 1. there is no file existing that was used for qiime in 132 so we have to do this from scratch
 2. the files in common do not include eukaryotes and including euks is not so easy because the silva taxonomy for euks does not use an easy to parse taxonomy sheme (we have different elements for different taxa) 
+
+For an alternative way of parsing, we can later check:
+
+https://mothur.org/blog/2020/SILVA-v138-reference-files/
 
 ```{bash}
 #used vs: 0.15.0
@@ -67,30 +115,32 @@ mkdir -p db/common/data db/common/taxonomy db/common/library
 #download data
 wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva.fasta.gz
 wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_ssu_138.1.txt.gz
-wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_lsu_138.1.acc_taxid.gz
+wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_ssu_138.1.acc_taxid.gz
 
 gzip -d db/common/*gz
+
+#remove spaces in the tax mapping to resolve issue with taxonkit:
+#sed -i "s/ /_/g" data/tax_slv_ssu_138.1.txt
 
 #get a taxonomy file
 perl build_silva_taxonomy.pl db/common/tax_slv_ssu_138.1.txt
 
-mkdir taxonomy
-mkdir data 
-
 mv names.dmp nodes.dmp db/common/taxonomy
 mv db/common/SILVA_138.1_SSURef_NR99_tax_silva.fasta db/common/tax_slv_ssu_138.1.txt db/common/data 
-mv  db/common/tax_slv_lsu_138.1.acc_taxid db/common/seqid2taxid.map
+mv  db/common/tax_slv_ssu_138.1.acc_taxid db/common/seqid2taxid.map
 
 #clean U 
 sed -e '/^>/!y/U/T/' db/common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta > db/common/ref-seqs.fna
 
 taxonkit lineage --data-dir db/common/taxonomy <(awk '{print $1}' db/common/taxonomy/names.dmp | sort | uniq) | \
  taxonkit reformat -r NA -a -f "{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}" --data-dir db/common/taxonomy | \
- awk 'BEGIN { FS = OFS = "\t" } {print $1,"D_0__"$3";D_1__"$4";D_2__"$5";D_3__"$6";D_4__"$7";D_5__"$8";D_6__"$9}' > db/common/ref-taxonomy.txt
+ awk 'BEGIN { FS = OFS = "\t" } {print $1,"D_0__"$3";D_1__"$4";D_2__"$5";D_3__"$6";D_4__"$7";D_5__"$8";D_6__"$9}' > db/common/taxid_to_tax.txt
+
+LC_ALL=C join -1 2 -2 1 -t $'\t' <(LC_ALL=C sort -k 2 db/common/seqid2taxid.map) <(LC_ALL=C sort -k1 db/common/taxid_to_tax.txt) \
+            | awk -F "\t" -v OFS="\t" '{{print $2, $3}}' > test.txt
 
 
 ```
-
 
 
 
