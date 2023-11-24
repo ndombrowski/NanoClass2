@@ -39,7 +39,67 @@ engine: knitr
 
 To do:
 
-- Check run for `non-zero` errors
+- kraken: use newer version, as default version runs into an error when downloading db
+- Check run for `non-zero` errors as well as "error"
+
+Kraken two downloads:
+
+- SILVA_138.1_SSURef_NR99_tax_silva.fasta
+-  tax_slv_ssu_138.1.txt
+
+
+## Dry run getting a tax map
+
+The issue is that 
+
+1. there is no file existing that was used for qiime in 132 so we have to do this from scratch
+2. the files in common do not include eukaryotes and including euks is not so easy because the silva taxonomy for euks does not use an easy to parse taxonomy sheme (we have different elements for different taxa) 
+
+```{bash}
+#used vs: 0.15.0
+conda activate taxonkit
+
+wget https://raw.githubusercontent.com/DerrickWood/kraken2/master/scripts/build_silva_taxonomy.pl
+
+#prep folders 
+mkdir -p db/common/data db/common/taxonomy db/common/library
+
+#download data
+wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva.fasta.gz
+wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_ssu_138.1.txt.gz
+wget -P db/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_lsu_138.1.acc_taxid.gz
+
+gzip -d db/common/*gz
+
+#get a taxonomy file
+perl build_silva_taxonomy.pl db/common/tax_slv_ssu_138.1.txt
+
+mkdir taxonomy
+mkdir data 
+
+mv names.dmp nodes.dmp db/common/taxonomy
+mv db/common/SILVA_138.1_SSURef_NR99_tax_silva.fasta db/common/tax_slv_ssu_138.1.txt db/common/data 
+mv  db/common/tax_slv_lsu_138.1.acc_taxid db/common/seqid2taxid.map
+
+#clean U 
+sed -e '/^>/!y/U/T/' db/common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta > db/common/ref-seqs.fna
+
+taxonkit lineage --data-dir db/common/taxonomy <(awk '{print $1}' db/common/taxonomy/names.dmp | sort | uniq) | \
+ taxonkit reformat -r NA -a -f "{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}" --data-dir db/common/taxonomy | \
+ awk 'BEGIN { FS = OFS = "\t" } {print $1,"D_0__"$3";D_1__"$4";D_2__"$5";D_3__"$6";D_4__"$7";D_5__"$8";D_6__"$9}' > db/common/ref-taxonomy.txt
+
+
+```
+
+
+
+
+
+```{bash}
+conda activate /home/ndombro/personal/snakemake_workflows/NanoClass2/.snakemake/conda/a8242208738e7b5509d605409fa6d659
+
+srun -n 1 --cpus-per-task 8 kraken2-build --db db/kraken --special silva --threads 8
+```
 
 ### Test-run
 

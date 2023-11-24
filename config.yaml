@@ -36,7 +36,7 @@ nanoplot:
 common:
     environment:                   "R4.0.yml"
     dburl:                         "https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip"
-    ssu:                           "16S" #16S or 18S
+    ssu:                           "ssu" ssu or or lsu
     dbmemory:                      4000
     group-by:                      sample
 

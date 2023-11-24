@@ -5,6 +5,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.9.7
+  - taxonkit=0.15.0
   - r-essentials
   - r-base
   - r-rlang=1.0.5

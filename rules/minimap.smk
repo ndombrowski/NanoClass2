@@ -27,7 +27,7 @@ rule minimap_bam2out:
     input:
         "classifications/{run}/minimap/{sample}.minimap.bam"
     output:
-        temp("classifications/{run}/minimap/{sample}.minimap.out")
+        "classifications/{run}/minimap/{sample}.minimap.out"
     threads:
         config["minimap"]["threads"]
     conda:

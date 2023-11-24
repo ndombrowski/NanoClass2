@@ -1,14 +1,13 @@
 rule common_download_db:
     output:
         ref_tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
-        ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna"),
-        ref_aln = os.path.join(DBPATH,"common/ref-seqs.aln")
+        ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["common"]["dbmemory"]
     params:
-        url = config["common"]["dburl"],
-        ssu = config["common"]["ssu"]
+        ssu = config["common"]["ssu"],
+        ssu_uppercase = config["common"]["ssu"].upper()
     log:
         "logs/common_download_db.log"
     benchmark:
@@ -17,23 +16,35 @@ rule common_download_db:
         os.path.join(ENVDIR,config["common"]["environment"])
     shell:
         """
-        wget -q -O {DBPATH}/common/db.zip {params.url}
+        #prep folders 
+        mkdir -p {DBPATH}/common/data {DBPATH}/common/taxonomy {DBPATH}/common/library
+
+        #download data
+        wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta.gz
+        wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_{params.ssu}_138.1.txt.gz
+        wget -P {DBPATH}/common https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/tax_slv_{params.ssu}_138.1.acc_taxid.gz
+
+        gzip -d {DBPATH}/common/*gz
+
+        #get a taxonomy file
+        perl {SRCDIR}/build_silva_taxonomy.pl {DBPATH}/common/tax_slv_{params.ssu}_138.1.txt
+
+        mv names.dmp nodes.dmp {DBPATH}/common/taxonomy
+        mv {DBPATH}/common/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta {DBPATH}/common/tax_slv_{params.ssu}_138.1.txt {DBPATH}/common/data 
+        mv  {DBPATH}/common/tax_slv_{params.ssu}_138.1.acc_taxid {DBPATH}/common/seqid2taxid.map
+
+        #clean U 
+        sed -e '/^>/!y/U/T/' {DBPATH}/common/data/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta | cut -f1 -d " " > {DBPATH}/common/ref-seqs.fna
+
+        taxonkit lineage --data-dir {DBPATH}/common/taxonomy <(awk '{{print $1}}' {DBPATH}/common/taxonomy/names.dmp | sort | uniq) | \
+            taxonkit reformat -r NA -a -f "{{k}}\t{{p}}\t{{c}}\t{{o}}\t{{f}}\t{{g}}\t{{s}}" --data-dir {DBPATH}/common/taxonomy | \
+            awk 'BEGIN {{ FS = OFS = "\t" }} {{print $1,"D_0__"$3";D_1__"$4";D_2__"$5";D_3__"$6";D_4__"$7";D_5__"$8";D_6__"$9}}' > {DBPATH}/common/taxid_to_tax.txt
         
-        unzip -q -p -j {DBPATH}/common/db.zip \
-            */taxonomy/{params.ssu}_only/99/majority_taxonomy_7_levels.txt \
-            > {output.ref_tax} 2> {log}
-        
-        unzip -q -p -j {DBPATH}/common/db.zip \
-            */rep_set/rep_set_{params.ssu}_only/99/silva_*_99_{params.ssu}.fna \
-            > {output.ref_seqs} 2>> {log}
-        
-        unzip -q -p -j {DBPATH}/common/db.zip \
-            */rep_set_aligned/99/99_alignment.fna.zip > tmp.aln.zip
-        
-        unzip -q -p tmp.aln.zip > {output.ref_aln} 2>> {log}
-        
-        rm {DBPATH}/common/db.zip tmp.aln.zip 2>> {log}
+        LC_ALL=C join -1 2 -2 1 -t $'\t' <(LC_ALL=C sort -k 2 {DBPATH}/common/seqid2taxid.map) <(LC_ALL=C sort -k1 {DBPATH}/common/taxid_to_tax.txt) \
+            | awk -F "\t" -v OFS="\t" '{{print $2, $3}}' > {DBPATH}/common/ref-taxonomy.txt
+
         """
+
 
 rule common_plot_tax:
     input:

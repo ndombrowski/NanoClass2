@@ -1,15 +1,15 @@
 rule kraken_build_db:
     output:
-        name_table = "db/kraken/taxonomy/names.dmp",
-        tax_tree = "db/kraken/taxonomy/nodes.dmp",
-        conversion_table = "db/kraken/seqid2taxid.map",
-        ref_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta"
+        name_table = os.path.join(DBPATH,"kraken/taxonomy/names.dmp"),
+        tax_tree = os.path.join(DBPATH,"kraken/taxonomy/nodes.dmp"),
+        conversion_table = os.path.join(DBPATH,"kraken/seqid2taxid.map"),
+        ref_seqs = os.path.join(DBPATH,"kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta")
     threads:
         config["kraken"]["dbthreads"]
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["kraken"]["dbmemory"]
     params:
-        db = "db/kraken",
+        db = os.path.join(DBPATH,"kraken"),
         db_type = config["kraken"]["dbtype"]
     conda:
         os.path.join(ENVDIR,config["kraken"]["environment"])
@@ -20,7 +20,7 @@ rule kraken_build_db:
     shell:
         """
         kraken2-build --db {params.db} --special {params.db_type} \
-          --threads {threads} > {log} 2> {log}
+          --threads {threads} > {log} 2>&1
         """
 
 rule kraken_classify:
@@ -35,7 +35,7 @@ rule kraken_classify:
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["kraken"]["memory"]
     params:
-        db_dir = "db/kraken"
+        db_dir = os.path.join(DBPATH,"kraken")
     conda:
         os.path.join(ENVDIR,config["kraken"]["environment"])
     log:
@@ -55,8 +55,8 @@ rule kraken_classify:
 rule kraken_tomat:
     input:
         kraken_out = "classifications/{run}/kraken/{sample}.kraken.out",
-        silva_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta",
-        kraken_map = "db/kraken/seqid2taxid.map"
+        silva_seqs = os.path.join(DBPATH,"kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta"),
+        kraken_map = os.path.join(DBPATH,"kraken/seqid2taxid.map")
     output:
         taxlist = "classifications/{run}/kraken/{sample}.kraken.taxlist",
         taxmat = "classifications/{run}/kraken/{sample}.kraken.taxmat",
@@ -70,7 +70,7 @@ rule kraken_tomat:
         "benchmarks/{run}/kraken_tomat_{sample}.txt"
     shell:
         """
-        scripts/tomat.py -k {input.kraken_out} -f {input.silva_seqs} \
+        {SRCDIR}/tomat.py -k {input.kraken_out} -f {input.silva_seqs} \
           -m {input.kraken_map} 2> {log}
         """
 

@@ -6,7 +6,7 @@ With a single command, you can run upto 11 classification tools on multiple samp
 
 NanoClass automatically installs all software packages and dependencies, downloads and builds required taxonomic databases and runs the analysis on your samples.
 
-For detailed instructions on how to use NanoClass2, please visit [the manual](https://ndombrowski.github.io/NanoClass2/)
+For detailed instructions on how to use NanoClass2, please visit [the manual](https://ndombrowski.github.io/NanoClass2/).
 
 **Please notice:**
 
