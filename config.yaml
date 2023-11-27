@@ -114,6 +114,8 @@ qual_filtering:
 #                      Range: 0-100.                                           #
 # - alnlength:     Minimal absolute alignment length for saving blastn hits.   #
 # - ntargetseqs:   Maximum number of aligned sequences to keep.                #
+# - confidence_score:   Confidence score threshold (default: 0.0); must be     #
+#                       range [0, 1]                                           #
 #------------------------------------------------------------------------------#
 blastn:
     environment:                   "blast.yml"
@@ -192,7 +194,17 @@ idtaxa:
     memory:                        10000
     pctthreshold:                  60
 
-    
+
+kraken:
+    environment:                   "kraken2.yml"
+    confidence_score:              0.0
+    dbthreads:                     8
+    dbmemory:                      1000
+    threads:                       16
+    memory:                        500
+    #dbtype:                        "silva"
+
+
 
 ################################################################################
 #                        Specific Parameters Section                           #
@@ -245,14 +257,6 @@ centrifuge:
     dbmemory:                      500
     threads:                       1
     memory:                        16000
-
-kraken:
-    environment:                   "kraken2.yml"
-    dbtype:                        "silva"
-    dbthreads:                     8
-    dbmemory:                      1000
-    threads:                       16
-    memory:                        500
 
 mapseq:
     threads:                       1

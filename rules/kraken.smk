@@ -35,7 +35,8 @@ rule kraken_classify:
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["kraken"]["memory"]
     params:
-        db_dir = os.path.join(DBPATH,"kraken")
+        db_dir = os.path.join(DBPATH,"kraken"),
+        confidence_score = config["kraken"]["confidence_score"]
     conda:
         os.path.join(ENVDIR,config["kraken"]["environment"])
     log:
@@ -45,10 +46,12 @@ rule kraken_classify:
     shell:
         """
         kraken2 --db {params.db_dir} \
+            --confidence {params.confidence_score} \
             --output {output.out} \
             --report {output.report} \
             --gzip-compressed \
             --threads {threads} {input.fastq} 2> {log}
+
         """
 
 
