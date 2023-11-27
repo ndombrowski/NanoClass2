@@ -112,7 +112,7 @@ rule blast_tolca:
         "benchmarks/{run}/blastn_tolca_{sample}.txt"
     shell:
         """
-        {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
+        python3 {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -130,4 +130,4 @@ rule blastn_tomat:
     benchmark:
         "benchmarks/{run}/blastn_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input} 2> {log}"

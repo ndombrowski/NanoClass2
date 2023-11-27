@@ -39,7 +39,8 @@ rule centrifuge_build_db:
         conversion_table = os.path.join(DBPATH,"common/seqid2taxid.map"),
         ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
     output:
-        touch(os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD"))
+        touch(os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD")),
+        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
     threads:
         config["centrifuge"]["dbthreads"]
     resources:
@@ -111,4 +112,4 @@ rule centrifuge_tomat:
     benchmark:
         "benchmarks/{run}/centrifuge_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -c {input.out} -f {input.ref_seqs} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -c {input.out} -f {input.ref_seqs} 2> {log}"

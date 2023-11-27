@@ -73,7 +73,7 @@ rule kraken_tomat:
         "benchmarks/{run}/kraken_tomat_{sample}.txt"
     shell:
         """
-        {SRCDIR}/tomat.py -k {input.kraken_out} -f {input.silva_seqs} \
+        python3 {SRCDIR}/tomat.py -k {input.kraken_out} -f {input.silva_seqs} \
           -m {input.kraken_map} 2> {log}
         """
 

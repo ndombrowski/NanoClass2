@@ -17,7 +17,7 @@ rule spingo_build_db:
         os.path.join(ENVDIR,config["spingo"]["environment"])
     shell:
         """
-        {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m spingo \
+        python3 {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m spingo \
             -S {output.seq} -T {output.tax} 2> {log}
         spindex -k 8 -p {threads} -d {output.seq} 2>> {log}
         """
@@ -69,4 +69,4 @@ rule spingo_tomat:
     benchmark:
         "benchmarks/{run}/spingo_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input.list} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input.list} 2> {log}"

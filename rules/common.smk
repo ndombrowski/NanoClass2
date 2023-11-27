@@ -2,7 +2,10 @@ rule common_download_db:
     output:
         ref_tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
         ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna"),
-        aln = os.path.join(DBPATH,"common/ref-seqs.aln")
+        aln = os.path.join(DBPATH,"common/ref-seqs.aln"),
+        names = os.path.join(DBPATH,"common/taxonomy/names.dmp"),
+        nodes = os.path.join(DBPATH,"common/seqid2taxid.map"),
+        seq_map = os.path.join(DBPATH,"common/taxonomy/nodes.dmp")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["common"]["dbmemory"]

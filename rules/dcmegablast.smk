@@ -101,7 +101,7 @@ rule dcmegablast_tolca:
         "benchmarks/{run}/dcmegablast_tolca_{sample}.txt"
     shell:
       	"""
-        {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
+        python3 {SRCDIR}/tolca.py -b {input.blast} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -119,4 +119,4 @@ rule dcmegablast_tomat:
     benchmark:
         "benchmarks/{run}/dcmegablast_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input} 2> {log}"

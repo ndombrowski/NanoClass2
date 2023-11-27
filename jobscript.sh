@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --job-name=nanoclass
-#SBATCH --output=cluster/%x-%u-%A-%a.log
+#SBATCH --job-name=NanoClass2
+#SBATCH --output=%x-%u-%A-%a.log
 ##SBATCH --mail-type=END,FAIL
 ##SBATCH --mail-user=...@...
 #SBATCH --ntasks=1
@@ -37,7 +37,7 @@ srun mkdir -p /scratch/$USER/tmp/
 export TMPDIR=/scratch/$USER/tmp/
 
 ## Run nanoclass
-cmd="srun --cores $SLURM_CPUS_ON_NODE snakemake --configfile input/config.yaml --use-conda --conda-prefix ../.snakemake/conda --cores $SLURM_CPUS_ON_NODE --nolock --rerun-incomplete"
+cmd="srun --cores $SLURM_CPUS_ON_NODE snakemake -s /home/ndombro/personal/testing/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix /home/ndombro/personal/testing/NanoClass2/.snakemake/conda --cores $SLURM_CPUS_ON_NODE --nolock --rerun-incomplete"
 echo "Running: $cmd"
 eval $cmd
 

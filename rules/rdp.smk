@@ -14,7 +14,7 @@ rule rdp_build_db:
         os.path.join(ENVDIR,config["rdp"]["environment"])
     shell:
         """
-        {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m rdp -S tmp.seq -T {output.tax} 2> {log}
+        python3 {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m rdp -S tmp.seq -T {output.tax} 2> {log}
         gzip -c tmp.seq > {output.seq} && rm tmp.seq 2>> {log}
         """
 
@@ -55,4 +55,4 @@ rule rdp_tomat:
     benchmark:
         "benchmarks/{run}/rdp_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input.list} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input.list} 2> {log}"

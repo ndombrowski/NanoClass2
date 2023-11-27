@@ -78,7 +78,7 @@ rule minimap_tolca:
         "benchmarks/{run}/minimap_tolca_{sample}.txt"
     shell:
         """
-	{SRCDIR}/tolca.py -b {input.mm} -t {input.db} \
+	python3 {SRCDIR}/tolca.py -b {input.mm} -t {input.db} \
              -l {output} -c {params.lcacons} > {log}
         """
 
@@ -97,4 +97,4 @@ rule minimap_tomat:
     benchmark:
         "benchmarks/{run}/minimap_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input} 2> {log}"

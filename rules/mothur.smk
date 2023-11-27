@@ -16,7 +16,7 @@ rule mothur_build_db:
         os.path.join(ENVDIR,config["mothur"]["environment"])
     shell:
         """
-        {SRCDIR}/todb.py -s {input.aln} -t {input.tax} -m mothur \
+        python3 {SRCDIR}/todb.py -s {input.aln} -t {input.tax} -m mothur \
             -S {output.aln} -T {output.tax} 2> {log}
         """
 
@@ -73,4 +73,4 @@ rule mothur_tomat:
     conda:
         os.path.join(ENVDIR,config["mothur"]["environment"])
     shell:
-        "{SRCDIR}/tomat.py -b {input.out} -t {input.tax} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -b {input.out} -t {input.tax} 2> {log}"

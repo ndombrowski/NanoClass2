@@ -57,5 +57,5 @@ rule idtaxa_tomat:
     benchmark:
         "benchmarks/{run}/idtaxa_tomat_{sample}.txt"
     shell:
-        "{SRCDIR}/tomat.py -l {input.list} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -l {input.list} 2> {log}"
 
