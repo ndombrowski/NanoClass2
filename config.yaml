@@ -165,6 +165,7 @@ minimap:
     threads:                       16
     memory:                        50000
     lcaconsensus:                  0.55
+    pctidentity:                   80
     ntargetseqs:                   10
 
 qiime:
