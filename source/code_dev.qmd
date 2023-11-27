@@ -67,6 +67,30 @@ https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva
 https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_tax_silva_full_align_trunc.fasta.gz
 
 
+
+
+
+Error in rule centrifuge_tomat:
+    jobid: 39
+    output: classifications/demo/centrifuge/R3A.centrifuge.taxlist, classifications/demo/centrifuge/R3A.centrifuge.taxmat, classifications/demo/centrifuge/R3A.centrifuge.otumat
+    log: logs/demo/centrifuge_tomat_R3A.log (check log file(s) for error message)
+    conda-env: /home/ndombro/personal/snakemake_workflows/NanoClass2/.snakemake/conda/c98e5bd467915505f1fa725bfa0a6cc9
+    shell:
+        /home/ndombro/personal/snakemake_workflows/NanoClass2/scripts/tomat.py -c classifications/demo/centrifuge/R3A.centrifuge.out -f /home/ndombro/personal/snakemake_workflows/NanoClass2/./db/c$        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+```{bash}
+conda activate /home/ndombro/personal/snakemake_workflows/NanoClass2/.snakemake/conda/c98e5bd467915505f1fa725bfa0a6cc9
+
+/home/ndombro/personal/snakemake_workflows/NanoClass2/scripts/tomat.py -c results/classifications/demo/centrifuge/R3A.centrifuge.out -f /home/ndombro/personal/snakemake_workflows/NanoClass2/./db/common/ref-seqs.fna 
+
+
+```
+
+
+
+
+
+
 Centrifuge:
 
 default path: https://www.arb-silva.de/fileadmin/silva_databases/release_132/Exports/taxonomy/taxmap_embl_ssu_ref_nr99_132.txt.gz

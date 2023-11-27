@@ -59,10 +59,10 @@ rule all:
         expand("data/{samples.run}/porechopped/{samples.sample}.trimmed.fastq.gz",
             samples=smpls.itertuples()
         ),
-        expand("plots/{samples.run}/nanofilt/{samples.sample}.filtered.pdf",
+        expand("plots/{samples.run}/chopper/{samples.sample}.filtered.pdf",
             samples=smpls.itertuples(), method=config["methods"]
         ),
-        expand("stats/{samples.run}/nanofilt/{samples.sample}.filtered.txt",
+        expand("stats/{samples.run}/chopper/{samples.sample}.filtered.txt",
             samples=smpls.itertuples(), method=config["methods"]
         ),
         expand("classifications/{samples.run}/{method}/{samples.sample}.{method}.taxmat",
@@ -78,10 +78,10 @@ rule all:
 
 rule filter:
     input:
-        expand("plots/{samples.run}/nanofilt/{samples.sample}.filtered.pdf",
+        expand("plots/{samples.run}/chopper/{samples.sample}.filtered.pdf",
             samples=smpls.itertuples(), method=config["methods"]
         ),
-        expand("stats/{samples.run}/nanofilt/{samples.sample}.filtered.txt",
+        expand("stats/{samples.run}/chopper/{samples.sample}.filtered.txt",
             samples=smpls.itertuples(), method=config["methods"]
         )
 

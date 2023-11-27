@@ -1,45 +1,120 @@
+#                             CONFIGURATION FILE                               #
+#------------------------------------------------------------------------------#
+# Configuration file for the NanoClass2 pipeline.                              #
+#                                                                              #
+# Set the parameters below, save the file and run Snakemake.                   #
+# In this config file, you specify                                             #
+# your input data, subsampling and classifiers to run                          #
+# and you can choose tools and parameters according to your needs              #
+# Most rules and parameters have default settings.                             #
+#                                                                              #
+# It is very important to keep the indentation of the file (i.e. don’t change  #
+# the tabs and spaces), as well as the name of the parameters/variables.       #
+# You can can however change the values of the parameters                      #
+#                                                                              #
+# @Author: Nina Dombrowski                                                     #
+# @Last update: 27/11/2023                                                     #
+################################################################################
+
+################################################################################
+#                       GENERAL PARAMETERS SECTION                             # 
+#------------------------------------------------------------------------------#
+# The general parameters section defines parameters that are global or general #
+# for the complete workflow. Please check carefully if                         #
+################################################################################
+
+#                             Mapping File                                     #
+#------------------------------------------------------------------------------#
+# Location of the mapping file                                                 #
+# The mapping file should be a comma separated file with the following columns:#
+# sample,barcode,path                                                          #
+# the sample names can contain letters and numbers                             #
+# please do not use spaces in the file paths                                   #
+#------------------------------------------------------------------------------#
 samples:                           "example_files/mapping.csv"
-methods:                           ["minimap"]
+
+
+#------------------------------------------------------------------------------#
+#                             Output folder name                               #
+#------------------------------------------------------------------------------#
+# The name of the output folder (default: results)                             #
+# Results can be found in <output_dir> after a successful run                  #
+#------------------------------------------------------------------------------#
 output_dir:                         "results"
-db_path:                           "db"
 
 
+#                             Classifiers to use                               #
+#------------------------------------------------------------------------------#
+# Choose what classifiers you want to use, currently, you can choose between:  #
+# a mix of different alignment-based and kmer-based classifiers                #
+#------------------------------------------------------------------------------#
+methods:                           ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo", "kraken"]
+
+
+#------------------------------------------------------------------------------#
+#                             Subsampling                                      #
+#------------------------------------------------------------------------------#
+# When comparing different classifiers it is useful to first subsample the     #
+# reads to reduce the runtime. With samplesize you can choose how many reads   #
+# to keep for further analyse                                                  #
+# If you want to turn subsamping of use skip: true                             #
+#------------------------------------------------------------------------------#
 subsample:
     skip:                          false
     samplesize:                    100
     environment:                   "preprocess.yml"
 
 
-porechop:
-    environment:                   "preprocess.yml"
-    threads:                       16
-    memory:                        4000
-    checkreads:                    20000 
-
-nanofilt:
+#------------------------------------------------------------------------------#
+#                        Quality control filtering                             #
+# modules: preprocess.smk                                                      #
+#------------------------------------------------------------------------------#
+#                                                                              #
+#-----------------------------       PARAMS       -----------------------------#
+#                                                                              #
+# - threads:       number of threads to use                                    #
+# - quality:       minimum Phred average quality score, reads with lower       #
+#                      quality scores will be discarded                        #
+# - minlen:        minimum read length, sequence shorter than this will be     #
+#                      discarded                                               #
+# - maxlen:        maximum read length, sequence longer than this will be      #
+#                      discarded                                               #
+# - headcrop:      trim N nucleotides from the start of a read                 #
+# - tailcrop:          trim N nucleotides from the end of a read               #
+#------------------------------------------------------------------------------#
+qual_filtering:
     environment:                   "preprocess.yml"
     memory:                        2000
+    threads:                       4
     minlen:                        1400
     maxlen:                        1600
     quality:                       10
+    headcrop:                      0
+    tailcrop:                      0
 
-nanostats:
-    environment:                   "preprocess.yml"
-    threads:                       2
-    memory:                        8000
 
-nanoplot:
-    environment:                   "preprocess.yml"
-    memory:                        4000
-    downsample:                    0
-
-common:
-    environment:                   "R4.0.yml"
-    #dburl:                         "https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip"
-    ssu:                           "ssu" ssu or or lsu
-    dbmemory:                      4000
-    group-by:                      sample
-
+#------------------------------------------------------------------------------#
+#                  Parameters for  classifiers                                 #
+# modules: blastn    .smk                                                      #
+#------------------------------------------------------------------------------#
+#                                                                              #
+#-----------------------------       PARAMS       -----------------------------#
+#                                                                              #
+# - threads:       number of threads to use                                    #
+# - lcaconsensus:  Threshold for calling a consensus. Proportion of blastn hits# 
+#                     with the same classification needed to return a consensus# 
+#                     Taxonomic classifications at the 6 taxonomic levels      #
+#                     (Domain, Phylum, Class, Order, Family, Genus) will only  #
+#                     be assigned if there is consensus at that level.         #
+#                     Range: 0.5-0.99                                          #
+# - evalue:        Expectation value (E) threshold for saving blastn hits.     #
+#                      Needs to be provided as decimal number,                 #
+#                      not in scientific notation!                             #
+# - pctidentity:   mPercent identity threshold for saving blastn hits.         #
+#                      Range: 0-100.                                           #
+# - alnlength:     Minimal absolute alignment length for saving blastn hits.   #
+# - ntargetseqs:   Maximum number of aligned sequences to keep.                #
+#------------------------------------------------------------------------------#
 blastn:
     environment:                   "blast.yml"
     threads:                       10
@@ -50,14 +125,6 @@ blastn:
     alnlength:                     100
     ntargetseqs:                   50
 
-centrifuge:
-    environment:                   "centrifuge.yml"
-    #taxmapurl:                     "https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/ncbi/taxmap_embl-ebi_ena_ssu_ref_nr99_138.1.txt.gz"
-    #sequrl:                        "https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva.fasta.gz"
-    dbthreads:                     4
-    dbmemory:                      500
-    threads:                       1
-    memory:                        16000
 
 dcmegablast:
     environment:                   "blast.yml"
@@ -69,24 +136,17 @@ dcmegablast:
     alnlength:                     100
     ntargetseqs:                   50
 
-idtaxa:
-    environment:                   "R4.0.yml"
-    dbmemory:                      3000
-    threads:                       8
-    memory:                        10000
-    pctthreshold:                  60
 
-kraken:
-    environment:                   "kraken2.yml"
-    dbtype:                        "silva"
-    dbthreads:                     8
-    dbmemory:                      1000
-    threads:                       16
+dcmegablast:
+    environment:                   "blast.yml"
+    threads:                       10
     memory:                        500
+    lcaconsensus:                  0.55
+    evalue:                        0.00001
+    pctidentity:                   80
+    alnlength:                     100
+    ntargetseqs:                   50
 
-mapseq:
-    threads:                       1
-    memory:                        1000
 
 megablast:
     environment:                   "blast.yml"
@@ -98,6 +158,7 @@ megablast:
     alnlength:                     100
     ntargetseqs:                   50
 
+
 minimap:
     environment:                   "minimap2.yml"
     dbmemory:                      3000
@@ -105,12 +166,6 @@ minimap:
     memory:                        50000
     lcaconsensus:                  0.55
     ntargetseqs:                   10
-
-mothur:
-    environment:                   "mothur.yml"
-    dbmemory:                      1000
-    threads:                       8
-    memory:                        20000
 
 qiime:
     environment:                   "qiime2.yml"
@@ -128,6 +183,86 @@ rdp:
     memory:                        5000
     pctthreshold:                  60
 
+
+idtaxa:
+    environment:                   "R4.0.yml"
+    dbmemory:                      3000
+    threads:                       8
+    memory:                        10000
+    pctthreshold:                  60
+
+    
+
+################################################################################
+#                        Specific Parameters Section                           #
+#------------------------------------------------------------------------------#
+# In this section of the configuration file, you can find all the parameters   #
+# used to run the different rules during the execution of the pipeline.        #
+################################################################################
+
+#------------------------------------------------------------------------------#
+#                        Adapter trimming with porechop                        #
+# modules: quality_filtering.smk                                               #
+#------------------------------------------------------------------------------#
+#                                                                              #
+#-----------------------------       PARAMS       -----------------------------#
+#                                                                              #
+# - threads:       number of threads to use                                    #
+# - memory:        memory to use, normally its ok to leave this as is          #
+#                      quality scores will be discarded                        #
+# - checkreads:     This many reads will be aligned to all possible adapters   #
+#                      determine which adapter sets are present                #
+#------------------------------------------------------------------------------#
+porechop:
+    environment:                   "preprocess.yml"
+    threads:                       16
+    memory:                        4000
+    checkreads:                    20000 
+
+nanostats:
+    environment:                   "preprocess.yml"
+    threads:                       2
+    memory:                        8000
+
+nanoplot:
+    environment:                   "preprocess.yml"
+    memory:                        4000
+    downsample:                    0
+
+common:
+    environment:                   "R4.0.yml"
+    #dburl:                         "https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip"
+    ssu:                           "ssu" ssu or or lsu (not yet tested)
+    dbmemory:                      4000
+    group-by:                      sample
+
+centrifuge:
+    environment:                   "centrifuge.yml"
+    #taxmapurl:                     "https://ftp.arb-silva.de/release_138.1/Exports/taxonomy/ncbi/taxmap_embl-ebi_ena_ssu_ref_nr99_138.1.txt.gz"
+    #sequrl:                        "https://ftp.arb-silva.de/release_138.1/Exports/SILVA_138.1_SSURef_NR99_tax_silva.fasta.gz"
+    dbthreads:                     4
+    dbmemory:                      500
+    threads:                       1
+    memory:                        16000
+
+kraken:
+    environment:                   "kraken2.yml"
+    dbtype:                        "silva"
+    dbthreads:                     8
+    dbmemory:                      1000
+    threads:                       16
+    memory:                        500
+
+mapseq:
+    threads:                       1
+    memory:                        1000
+
+mothur:
+    environment:                   "mothur.yml"
+    dbmemory:                      1000
+    threads:                       8
+    memory:                        20000
+
 spingo:
     environment:                   "spingo.yml"
     dbthreads:                     16
@@ -135,3 +270,4 @@ spingo:
     threads:                       16
     memory:                        50000
 
+db_path:                           "db"
