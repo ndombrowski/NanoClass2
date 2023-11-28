@@ -5,7 +5,8 @@ rule common_download_db:
         aln = os.path.join(DBPATH,"common/ref-seqs.aln"),
         names = os.path.join(DBPATH,"common/taxonomy/names.dmp"),
         nodes = os.path.join(DBPATH,"common/seqid2taxid.map"),
-        seq_map = os.path.join(DBPATH,"common/taxonomy/nodes.dmp")
+        seq_map = os.path.join(DBPATH,"common/taxonomy/nodes.dmp"),
+        silva_seqs = os.path.join(DBPATH,"common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta")
     threads: 1
     resources:
         mem_mb = lambda wildcards, attempt: attempt * config["common"]["dbmemory"]
@@ -44,6 +45,9 @@ rule common_download_db:
 
         #clean U 
         sed -e '/^>/!y/U/T/' {DBPATH}/common/data/SILVA_138.1_{params.ssu_uppercase}Ref_NR99_tax_silva.fasta | cut -f1 -d " " > {DBPATH}/common/ref-seqs.fna
+
+        #create symlink for kraken
+        ln -s {DBPATH}/common/ref-seqs.fna {DBPATH}/common/library/ref-seqs.fna
 
         taxonkit lineage --data-dir {DBPATH}/common/taxonomy <(awk '{{print $1}}' {DBPATH}/common/taxonomy/names.dmp | sort | uniq) | \
             taxonkit reformat -r NA -a -f "{{k}}\t{{p}}\t{{c}}\t{{o}}\t{{f}}\t{{g}}\t{{s}}" --data-dir {DBPATH}/common/taxonomy | \
