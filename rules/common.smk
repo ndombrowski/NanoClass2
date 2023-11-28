@@ -2,6 +2,7 @@ rule common_download_db:
     output:
         ref_tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
         ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna"),
+        ref_seqs_tax = os.path.join(DBPATH,"common/ref-seqs-tax.fna"),
         aln = os.path.join(DBPATH,"common/ref-seqs.aln"),
         names = os.path.join(DBPATH,"common/taxonomy/names.dmp"),
         nodes = os.path.join(DBPATH,"common/seqid2taxid.map"),
@@ -56,6 +57,8 @@ rule common_download_db:
         LC_ALL=C join -1 2 -2 1 -t $'\t' <(LC_ALL=C sort -k 2 {DBPATH}/common/seqid2taxid.map) <(LC_ALL=C sort -k1 {DBPATH}/common/taxid_to_tax.txt) \
             | awk -F "\t" -v OFS="\t" '{{print $2, $3}}' > {DBPATH}/common/ref-taxonomy.txt
 
+        #add clean taxonomy to sequence header
+        python3 {SRCDIR}/add_taxonomy.py -i {DBPATH}/common/library/ref-seqs.fna -t {DBPATH}/common/ref-taxonomy.txt -o {output.ref_seqs_tax}
         """
 
 
@@ -115,7 +118,7 @@ rule common_get_precision:
     conda:
         os.path.join(ENVDIR,config["common"]["environment"])
     shell:
-        "{SRCDIR}/toconsensus.py -l {input} 2> {log}"
+        "python3 {SRCDIR}/toconsensus.py -l {input} 2> {log}"
 
 
 rule common_plot_precision:

@@ -37,6 +37,8 @@ engine: knitr
 Vroom version: vroom_1.5.7
 
 
+kraken2 --db /home/ndombro/personal/testing/NanoClass2/./db/common             --confidence 0.0             --output classifications/demo/kraken/R1A.kraken.out             --report classifications/demo/kraken/R1A.kraken.report             --gzip-compressed             --threads 16 data/demo/chopper/R1A.subsampled.fastq.gz
+
 Github testrun:
 
 ```{bash}
@@ -53,6 +55,57 @@ cp ~/personal/testing/NanoClass2/jobscript.sh .
 snakemake -s /home/ndombro/personal/testing/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix /home/ndombro/personal/testing/NanoClass2/.snakemake/conda --cores 1 --nolock --rerun-incomplete -np
 
 ```
+
+### Sanity checks
+
+#### Controlling otu table counts
+
+Centrifuge has a problem that the counts are larger than 100. To solve this, we set the -k to 1 for now. For later
+
+```{bash}
+cd results/classifications/demo/centrifuge
+
+#check why we do not max out at 100
+for file in */*otumat; do
+    sum=$(awk -F'\t' 'NR>1 {sum+=$2} END {print sum}' "$file")
+    echo "Sum of Column 2 in $file: $sum"
+done
+
+#check unique labels in the raw reads (are 100)
+for file in *out; do
+    count=$(awk  -F'\t' '{print $1}' "$file" | sort | uniq | wc -l)
+    echo "read number in $file: $count"
+done
+
+#check total counts
+wc -l *out
+
+#check unique genera in the raw reads (are 100)
+for file in *out; do
+    count=$(awk -F'\t' '{print $2}' "$file" | sort | uniq | wc -l)
+    echo "read number in $file: $count"
+done
+
+
+#get a new ref file
+python add_taxonomy.py -i ref-seqs.fna -t ref-taxonomy.txt -o ref-seqs-tax.fna
+
+
+
+conda activate /home/ndombro/personal/testing/NanoClass2/.snakemake/conda/e3443d8e60db4c8046194cb2448abc78
+
+python3 /home/ndombro/personal/testing/NanoClass2/scripts/tomat.py -c classifications/demo/centrifuge/R1A.centrifuge.out -f /home/ndombro/personal/testing/NanoClass2/db/common/ref-seqs-tax.fna
+
+
+```
+
+
+Sum of Column 2 in centrifuge/R1A.centrifuge.otumat: 84
+Sum of Column 2 in centrifuge/R2A.centrifuge.otumat: 74
+Sum of Column 2 in centrifuge/R3A.centrifuge.otumat: 110
+
+
+
 
 Changes made to config.yaml:
 

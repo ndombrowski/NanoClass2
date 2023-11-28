@@ -8,7 +8,15 @@ bibliography: references.bib
 
 # References
 
+NanoClass makes use of third-party software and resources. If you make use of NanoClass2 we recommend that you cite this software when using NanoClass2.
+
 The version numbers are the exact versions used to develop this workflow.
+
+## Database
+
+-   SILVA_138.1_SSURef_NR99 [@quast2013]
+
+## Software
 
 -   Snakemake v6.8.0 [@mölder2021]
 -   Python v3.9.7
@@ -24,17 +32,17 @@ The version numbers are the exact versions used to develop this workflow.
     -   seqinr v4.2_16
     -   decipher v2.18.1
     -   r-vroom v1.5.7
--   Porechop v0.2.4
--   NanoFilt v2.7.1
--   NanoStat v1.4.0
--   seqtk v1.3
--   Pistis v0.3.3
--   blast v2.10.1
--   fasta-splitter v0.2.6
+-   Porechop v0.2.4, [link to github](https://github.com/rrwick/Porechop)
+-   Chopper v0.6.0 [@decoster2023]
+-   NanoStat v1.4.0 [@decoster2018]
+-   seqtk v1.3, [link to github](https://github.com/lh3/seqtk)
+-   Pistis v0.3.3, [link to github](https://github.com/mbhall88/pistis)
+-   blast v2.10.1 [@altschul1990]
+-   fasta-splitter v0.2.6 [link to manual](https://kirill-kryukov.com/study/tools/fasta-splitter/)
 -   minimap2 v2.17 [@li2018]
--   samtools v1.10
--   centrifuge v1.0.4_beta
--   mothur v1.44
--   kraken2 v2.0.8_beta
--   qiime2 v2020.8
--   spingo=1.3
+-   samtools v1.10 [@li2009]
+-   centrifuge v1.0.4_beta [@kim2016]
+-   mothur v1.44 [@schloss2009]
+-   kraken2 v2.0.8_beta [@wood2019]
+-   qiime2 v2020.8 [@estaki2020]
+-   spingo=1.3 [@allard2015]

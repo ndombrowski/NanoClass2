@@ -29,7 +29,7 @@ Next, open the config.yaml with an editor, such as nano. There are several thing
 
 **1. The samples you want to analyse**
 
-Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: `samples_file: "example_files/mapping.csv"`. You can provide the relative path (i.e. relative to the working directory you start the snakemake workflow in) or absolute path (i.e. the location of a file or directory from the root directory(/))
+Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: `samples_file: "example_files/mapping.csv"`. You can provide the relative path (i.e. relative to the working directory you start the snakemake workflow in) or absolute path (i.e. the location of a file or directory from the root directory(`/`)). 
 
 This file needs to contain the following columns:
 
@@ -80,7 +80,12 @@ subsample:
     environment:                   "preprocess.yml"
 ```
 
-**4. Other settings**
+**4. Output folder name**
+
+The name of the folder in which the results should be stored in.
+
+
+**5. Other settings**
 
 Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `nanofilt`).
 
@@ -145,15 +150,15 @@ snakemake --report report.html \
   -s <path_to_NanoITS_install>/Snakefile
 ```
 
-The report includes:
+Afterwards, the report can be found in the output folder and includes:
 
 - A shematic of the steps executed
-- A PDF containing information about the reads after quality filtering. To view the full report, download the file/
-- Taxonomic bargraphs for different taxonomic ranks (and classifiers if more than one was used)
+- A PDF containing information about the reads after quality filtering. To view the full report, download the file
+- Bargraphs for different taxonomic ranks (and classifiers if more than one was used)
 - Information about the run-times for each sample and statistics on the runtimes for each tool/sample
 
 Additionally, the output folder contains:
 
-- `<output_dir>/data/<run>/nanofilt`: The filtered reads (useful if you want to do something else with these reads)
+- `<output_dir>/data/<run>/chopper`: The filtered reads (useful if you want to do something else with these reads)
 - `<output_dir>/classifications/<run>/<method>`: The OTU matrix for each sample and classifier
-- `<output_dir>/tables`: OTU and taxonomy tables combined for each sample and classifier used
+- `<output_dir>/tables`: An OTU as well as a taxonomy table combined for each sample and classifier used

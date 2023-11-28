@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-27">
+<meta name="dcterms.date" content="2023-11-28">
 
 <title>NanoClass2 – run_nanoclass</title>
 <style>
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You can also run your analyses in the NanoITS folder you downloaded, but often its easier to separate software from analyses.</p>
 <p>Next, open the config.yaml with an editor, such as nano. There are several things you can modify:</p>
 <p><strong>1. The samples you want to analyse</strong></p>
-<p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>. You can provide the relative path (i.e.&nbsp;relative to the working directory you start the snakemake workflow in) or absolute path (i.e.&nbsp;the location of a file or directory from the root directory(/))</p>
+<p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>. You can provide the relative path (i.e.&nbsp;relative to the working directory you start the snakemake workflow in) or absolute path (i.e.&nbsp;the location of a file or directory from the root directory(<code>/</code>)).</p>
 <p>This file needs to contain the following columns:</p>
 <ol type="1">
 <li><code>run</code>: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.</li>
@@ -250,7 +250,9 @@ Important
     skip:                          true
     samplesize:                    100
     environment:                   "preprocess.yml"</code></pre>
-<p><strong>4. Other settings</strong></p>
+<p><strong>4. Output folder name</strong></p>
+<p>The name of the folder in which the results should be stored in.</p>
+<p><strong>5. Other settings</strong></p>
 <p>Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in <code>nanofilt</code>).</p>
 </section>
 <section id="running-nanoclass2-1" class="level2">
@@ -313,18 +315,18 @@ Warning
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--configfile</span> config.yaml <span class="dt">\</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-s</span> <span class="op">&lt;</span>path_to_NanoITS_install<span class="op">&gt;</span>/Snakefile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The report includes:</p>
+<p>Afterwards, the report can be found in the output folder and includes:</p>
 <ul>
 <li>A shematic of the steps executed</li>
-<li>A PDF containing information about the reads after quality filtering. To view the full report, download the file/</li>
-<li>Taxonomic bargraphs for different taxonomic ranks (and classifiers if more than one was used)</li>
+<li>A PDF containing information about the reads after quality filtering. To view the full report, download the file</li>
+<li>Bargraphs for different taxonomic ranks (and classifiers if more than one was used)</li>
 <li>Information about the run-times for each sample and statistics on the runtimes for each tool/sample</li>
 </ul>
 <p>Additionally, the output folder contains:</p>
 <ul>
-<li><code>&lt;output_dir&gt;/data/&lt;run&gt;/nanofilt</code>: The filtered reads (useful if you want to do something else with these reads)</li>
+<li><code>&lt;output_dir&gt;/data/&lt;run&gt;/chopper</code>: The filtered reads (useful if you want to do something else with these reads)</li>
 <li><code>&lt;output_dir&gt;/classifications/&lt;run&gt;/&lt;method&gt;</code>: The OTU matrix for each sample and classifier</li>
-<li><code>&lt;output_dir&gt;/tables</code>: OTU and taxonomy tables combined for each sample and classifier used</li>
+<li><code>&lt;output_dir&gt;/tables</code>: An OTU as well as a taxonomy table combined for each sample and classifier used</li>
 </ul>
 
 
@@ -700,7 +702,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">Copyright 2023, Nina Dombrowski<br>
-Last modified: November 27, 2023</div>
+Last modified: November 28, 2023</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

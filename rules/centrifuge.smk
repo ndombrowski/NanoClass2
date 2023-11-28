@@ -73,7 +73,7 @@ rule centrifuge_classify:
         #ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
         #ref_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta"
     output:
-        report = temp("classifications/{run}/centrifuge/{sample}.report.tsv"),
+        report = "classifications/{run}/centrifuge/{sample}.report.tsv",
         classification = "classifications/{run}/centrifuge/{sample}.centrifuge.out"
     threads:
         config["centrifuge"]["threads"]
@@ -92,6 +92,7 @@ rule centrifuge_classify:
         centrifuge -x {params.index_prefix} \
           -U {input.fastq} \
           --threads {threads} \
+          -k 1 \
           --report-file {output.report} \
           -S  {output.classification} \
           --met-stderr > {log} 2>&1
@@ -101,8 +102,7 @@ rule centrifuge_classify:
 rule centrifuge_tomat:
     input:
         out = "classifications/{run}/centrifuge/{sample}.centrifuge.out",
-        silva_seqs = os.path.join(DBPATH,"common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta"),
-        tax_map = os.path.join(DBPATH,"common/seqid2taxid.map")
+        ref_seqs_tax = os.path.join(DBPATH,"common/ref-seqs-tax.fna")
     output:
         taxlist = "classifications/{run}/centrifuge/{sample}.centrifuge.taxlist",
         taxmat = "classifications/{run}/centrifuge/{sample}.centrifuge.taxmat",
@@ -116,6 +116,5 @@ rule centrifuge_tomat:
         "benchmarks/{run}/centrifuge_tomat_{sample}.txt"
     shell:
         """
-        python3 {SRCDIR}/tomat.py -k {input.out} -f {input.silva_seqs} \
-          -m {input.tax_map} 2> {log}
+        python3 {SRCDIR}/tomat.py -c {input.out} -f {input.ref_seqs_tax} 2> {log}
         """

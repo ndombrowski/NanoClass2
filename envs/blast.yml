@@ -9,4 +9,4 @@ dependencies:
   - gawk
   - python=3.8.5
   - blast=2.10.1
-  - fasta-splitter
+  - fasta-splitter=0.2.6
