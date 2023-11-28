@@ -17,13 +17,13 @@ If you have no preference for a classifier, you first might want to test, which 
 
 In the configuration file, also called config.yaml, you can specify how NanoClass2 should be run.
 
-To change the default settings and tell Snakemake where your data is located copy the `config.yaml` file found in the NanoClass2 folder to the folder in which you want to analyse your data, i.e. like this:
+To tell Snakemake where your data is located and to change the default settings start by copying the `config.yaml` file found in the NanoClass2 folder to the folder in which you want to analyse your data, i.e. like this:
 
 ```{bash}
-cp <path_to_NanoClass2_folder>.config.yaml .
+cp <path_to_NanoClass2_folder>/config.yaml .
 ```
 
-You can of course run your analyses in NanoITS folder you downloaded, but often its easier to separate software from analyses.
+You can also run your analyses in the NanoITS folder you downloaded, but often its easier to separate software from analyses.
 
 Next, open the config.yaml with an editor, such as nano. There are several things you can modify:
 
@@ -33,10 +33,10 @@ Here, you need to provide the path to a comma-separated mapping file that descri
 
 This file needs to contain the following columns:
 
-0. `run`: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.
-1. `sample`: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.
-2. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now.
-3. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
+1. `run`: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.
+2. `sample`: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.
+3. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now.
+4. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
 
 An example file could look like this (exchange <path> with the location of your samples):
 
@@ -49,7 +49,7 @@ demo,R3A,BC03,<path>/barcode03_merged.fastq.gz
 
 **2. The classifiers you want to use**
 
-You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can use the full list.
+You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, ...) classifiers you could use: `methods: ["blastn")`
 
 
 **3. Subsampling our reads**
@@ -58,7 +58,7 @@ You can choose what classifiers you want to use in `methods: ["blastn","centrifu
 
 In this section, we can specify whether we would like to subset the number of reads and how many reads per sample you like to include. This allows us to run NanoClass2 in two modes:
 
-1. **With subsampling**: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting `skip: false` in the subsample section of the yaml file. If you use this mode, you could also consider to only analyse a subset of your samples in order to speed up the analysis.
+1. **With subsampling**: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting `skip: false` in the subsample section of the yaml file. Additionally, we can specify how many reads we want to analyse per sample with `samplesize: 100`. 
 2. **Without subsampling**: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using `skip: true` in the subsample section of the yaml file.
 :::
 
@@ -91,13 +91,13 @@ Finally, you can change tool specific parameters: If desired, there are several 
 
 To test whether the workflow is defined properly do a dry-run first. In the command, do the following changes:
 
-1. Provide the path to where you installed NanoITS afer `--s`
+1. Provide the path to where you installed NanoClass2 (and where the file specifying how the workflow is run, the Snakemake file, can be found) afer `--s`
 2.  Provide the path to the edited config file after `--configfile`
-3. Provide the path to where you want snakemake to install all program dependencies after `--conda-prefix`. We recommend to install these into the folder in which you downloaded NanoITS but you can change this if desired
+3. Provide the path to where you want snakemake to install all program dependencies after `--conda-prefix`. We recommend to install these into the folder in which you downloaded NanoClass2 but you can change this if desired
 
 ```{bash}
 #activate conda environment with your snakemake installation, i.e. 
-mamba activate snakemake_nanoclass
+conda activate snakemake_nanoclass
 
 #perform a dry-run
 snakemake --cores 1 \
@@ -109,7 +109,7 @@ snakemake --cores 1 \
 
 ### Run NanoClass2 interactively
 
-If the dry-run was successful you can run snakemake interactively with the following command. Adjust the cores according to your system.
+If the dry-run was successful you can run snakemake interactively with the command below. Adjust the cores according to your system.
 
 ::: {.callout-warning}
 

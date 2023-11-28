@@ -1,8 +1,8 @@
 rule mapseq_classify:
     input:
         query = rules.prep_fasta_query.output,
-        ref_tax = "db/common/ref-taxonomy.txt",
-        ref_seqs = "db/common/ref-seqs.fna"
+        ref_tax = os.path.join(DBPATH,"common/ref-taxonomy.txt"),
+        ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
     output:
         temp("classifications/{run}/mapseq/{sample}.mapseq.out")
     threads:
@@ -24,7 +24,7 @@ rule mapseq_classify:
 rule mapseq_tomat:
     input:
         out = "classifications/{run}/mapseq/{sample}.mapseq.out",
-        db = "db/common/ref-taxonomy.txt"
+        db = os.path.join(DBPATH,"common/ref-taxonomy.txt")
     output:
         taxlist = "classifications/{run}/mapseq/{sample}.mapseq.taxlist",
         taxmat = "classifications/{run}/mapseq/{sample}.mapseq.taxmat",
@@ -35,5 +35,5 @@ rule mapseq_tomat:
     benchmark:
         "benchmarks/{run}/mapseq_tomat_{sample}.txt"
     shell:
-        "scripts/tomat.py -b {input.out} -t {input.db} 2> {log}"
+        "python3 {SRCDIR}/tomat.py -b {input.out} -t {input.db} 2> {log}"
 

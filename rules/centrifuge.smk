@@ -28,7 +28,7 @@
 #             awk '{{print $1\".\"$2\".\"$3\"\t\"$(NF)}}' \
 #             > {output.tax_map} 2>> {log}
         
-#         {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m centrifuge \
+#         python3 {SRCDIR}/todb.py -s {input.seq} -t {input.tax} -m centrifuge \
 #             -S {output.ref_seqs} -T {output.ref_tax} 2>> {log}
 #         """
 
@@ -39,8 +39,8 @@ rule centrifuge_build_db:
         conversion_table = os.path.join(DBPATH,"common/seqid2taxid.map"),
         ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
     output:
-        touch(os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD")),
-        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
+        #ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna"),
+        done = os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD")
     threads:
         config["centrifuge"]["dbthreads"]
     resources:
@@ -61,18 +61,20 @@ rule centrifuge_build_db:
           --taxonomy-tree {input.tax_tree} \
           --name-table {input.name_table} \
           {input.ref_seqs} {params.prefix} > {log} 2>&1
+
+        touch {output.done}
         """
 
 
 rule centrifuge_classify:
     input:
-        rules.centrifuge_build_db.output,
-        fastq = get_seqfiletype,
-        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
+        os.path.join(DBPATH,"centrifuge/CENTRIFUGE_DB_BUILD"),
+        fastq = get_seqfiletype
+        #ref_seqs = os.path.join(DBPATH,"common/ref-seqs.fna")
         #ref_seqs = "db/kraken/data/SILVA_132_SSURef_Nr99_tax_silva.fasta"
     output:
         report = temp("classifications/{run}/centrifuge/{sample}.report.tsv"),
-        classification = "classifications/{run}/centrifuge/{sample}.centrifuge.out",
+        classification = "classifications/{run}/centrifuge/{sample}.centrifuge.out"
     threads:
         config["centrifuge"]["threads"]
     resources:
@@ -99,7 +101,8 @@ rule centrifuge_classify:
 rule centrifuge_tomat:
     input:
         out = "classifications/{run}/centrifuge/{sample}.centrifuge.out",
-        ref_seqs = os.path.join(DBPATH,"centrifuge/ref-seqs.fna")
+        silva_seqs = os.path.join(DBPATH,"common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta"),
+        tax_map = os.path.join(DBPATH,"common/seqid2taxid.map")
     output:
         taxlist = "classifications/{run}/centrifuge/{sample}.centrifuge.taxlist",
         taxmat = "classifications/{run}/centrifuge/{sample}.centrifuge.taxmat",
@@ -112,4 +115,7 @@ rule centrifuge_tomat:
     benchmark:
         "benchmarks/{run}/centrifuge_tomat_{sample}.txt"
     shell:
-        "python3 {SRCDIR}/tomat.py -c {input.out} -f {input.ref_seqs} 2> {log}"
+        """
+        python3 {SRCDIR}/tomat.py -k {input.out} -f {input.silva_seqs} \
+          -m {input.tax_map} 2> {log}
+        """

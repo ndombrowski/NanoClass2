@@ -34,6 +34,8 @@ engine: knitr
 
 ## Notes on code development
 
+Vroom version: vroom_1.5.7
+
 
 Github testrun:
 
@@ -146,12 +148,12 @@ pphyseq  = transform_sample_counts(physeq, function(x) x / sum(x) )
 
 theme_set(theme_bw())
 
-top.taxa <- tax_glom(physeq, "Phylum")
+top.taxa <- tax_glom(physeq, "Class")
 TopNOTUs <- names(sort(taxa_sums(top.taxa), TRUE)[1:20])
 BottumNOTUs <- names(taxa_sums(top.taxa))[which(!names(taxa_sums(top.taxa)) %in% TopNOTUs)]
 merged_physeq = merge_taxa(top.taxa, BottumNOTUs, 2)
 
-mdf = psmelt(merged_physeq); names(mdf)[names(mdf) == "Phylum"] <- "level"
+mdf = psmelt(merged_physeq); names(mdf)[names(mdf) == "Class"] <- "level"
 mdf$OTU[which(is.na(mdf$level))] <- "aaaOther"
 mdf$level[which(is.na(mdf$level))] <- "aaaOther"
 aggr_mdf <- aggregate(Abundance ~ sample + run + method + level, data = mdf, sum)
