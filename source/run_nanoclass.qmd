@@ -87,7 +87,7 @@ The name of the folder in which the results should be stored in.
 
 **5. Other settings**
 
-Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `nanofilt`).
+Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `qual_filtering`). Please check out the config.yaml file, which provides more detailed explanation on each setting.
 
 
 ## Running NanoClass2

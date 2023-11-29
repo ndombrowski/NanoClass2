@@ -4586,6 +4586,15 @@ vertical-align: -.125em;
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">-s</span> /home/ndombro/personal/testing/NanoClass2/Snakefile <span class="at">--configfile</span> config.yaml <span class="at">--use-conda</span> <span class="at">--conda-prefix</span> /home/ndombro/personal/testing/NanoClass2/.snakemake/conda <span class="at">--cores</span> 1 <span class="at">--nolock</span> <span class="at">--rerun-incomplete</span> <span class="at">-np</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Changes made to config.yaml:</p>
+<ul>
+<li>samples: “../NanoClass2/example_files/mapping.csv”</li>
+</ul>
+<p>Changes to mapping.csv</p>
+<ul>
+<li>Change path to: <code>/home/ndombro/personal/testing/NanoClass2/example_files/barcode01_merged.fastq.gz</code></li>
+</ul>
+<p>/home/ndombro/personal/testing/NanoClass2/scripts/tomat.py -k classifications/demo/kraken/R3A.kraken.out -f /home/ndombro/personal/testing/NanoClass2/./db/kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta -m /home/ndombro/personal/testing/NanoClass2/./db/kraken/seqid2taxid.map</p>
 <section id="sanity-checks" class="level3">
 <h3 class="anchored" data-anchor-id="sanity-checks">Sanity checks</h3>
 <section id="controlling-otu-table-counts" class="level4">
@@ -4613,17 +4622,19 @@ vertical-align: -.125em;
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="pp">*</span>out<span class="kw">;</span> <span class="cf">do</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="fu">awk</span> <span class="at">-F</span><span class="st">&#39;\t&#39;</span> <span class="st">&#39;{print $2}&#39;</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;read number in </span><span class="va">$file</span><span class="st">: </span><span class="va">$count</span><span class="st">&quot;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#get a new ref file</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> add_taxonomy.py <span class="at">-i</span> ref-seqs.fna <span class="at">-t</span> ref-taxonomy.txt <span class="at">-o</span> ref-seqs-tax.fna</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /home/ndombro/personal/testing/NanoClass2/.snakemake/conda/e3443d8e60db4c8046194cb2448abc78</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> /home/ndombro/personal/testing/NanoClass2/scripts/tomat.py <span class="at">-c</span> classifications/demo/centrifuge/R1A.centrifuge.out <span class="at">-f</span> /home/ndombro/personal/testing/NanoClass2/db/common/ref-seqs-tax.fna</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Changes made to config.yaml:</p>
-<ul>
-<li>samples: “../NanoClass2/example_files/mapping.csv”</li>
-</ul>
-<p>Changes to mapping.csv</p>
-<ul>
-<li>Change path to: <code>/home/ndombro/personal/testing/NanoClass2/example_files/barcode01_merged.fastq.gz</code></li>
-</ul>
-<p>/home/ndombro/personal/testing/NanoClass2/scripts/tomat.py -k classifications/demo/kraken/R3A.kraken.out -f /home/ndombro/personal/testing/NanoClass2/./db/kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta -m /home/ndombro/personal/testing/NanoClass2/./db/kraken/seqid2taxid.map</p>
+<p>Sum of Column 2 in centrifuge/R1A.centrifuge.otumat: 84 Sum of Column 2 in centrifuge/R2A.centrifuge.otumat: 74 Sum of Column 2 in centrifuge/R3A.centrifuge.otumat: 110</p>
 <p>Problem with R:</p>
 <p>classifications/demo/kraken/R1A.kraken.taxmat, classifications/demo/kraken/R2A.kraken.taxmat, classifications/demo/kraken/R3A.kraken.taxmat</p>
 <div class="cell">
