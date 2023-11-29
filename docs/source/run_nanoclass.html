@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="op">&lt;</span>path_to_NanoClass2_folder<span class="op">&gt;</span>/config.yaml .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You can also run your analyses in the NanoITS folder you downloaded, but often its easier to separate software from analyses.</p>
+<p>You can also run your analyses in the NanoClass2 folder you downloaded, but often it is easier to separate software from analyses.</p>
 <p>Next, open the config.yaml with an editor, such as nano. There are several things you can modify:</p>
 <p><strong>1. The samples you want to analyse</strong></p>
 <p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>. You can provide the relative path (i.e.&nbsp;relative to the working directory you start the snakemake workflow in) or absolute path (i.e.&nbsp;the location of a file or directory from the root directory(<code>/</code>)).</p>
@@ -313,7 +313,7 @@ Warning
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">--report</span> report.html <span class="dt">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--configfile</span> config.yaml <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-s</span> <span class="op">&lt;</span>path_to_NanoITS_install<span class="op">&gt;</span>/Snakefile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-s</span> <span class="op">&lt;</span>path_to_NanoClass2_install<span class="op">&gt;</span>/Snakefile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Afterwards, the report can be found in the output folder and includes:</p>
 <ul>

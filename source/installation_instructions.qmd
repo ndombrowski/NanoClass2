@@ -23,9 +23,9 @@ mamba create -c conda-forge -c bioconda -n snakemake_nanoclass python=3.9.7 snak
 ```
 
 
-## Install NanoITS
+## Install NanoClass2
 
-NanoClass can be installed via [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) as follows:
+NanoClass2 can be installed via [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) as follows:
 
 ```{bash}
 git clone https://github.com/ndombrowski/NanoClass2.git

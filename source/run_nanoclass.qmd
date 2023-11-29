@@ -23,7 +23,7 @@ To tell Snakemake where your data is located and to change the default settings 
 cp <path_to_NanoClass2_folder>/config.yaml .
 ```
 
-You can also run your analyses in the NanoITS folder you downloaded, but often its easier to separate software from analyses.
+You can also run your analyses in the NanoClass2 folder you downloaded, but often it is easier to separate software from analyses.
 
 Next, open the config.yaml with an editor, such as nano. There are several things you can modify:
 
@@ -147,7 +147,7 @@ After a successful run, you can create a report with some of the key output file
 ```{bash}
 snakemake --report report.html \
   --configfile config.yaml \
-  -s <path_to_NanoITS_install>/Snakefile
+  -s <path_to_NanoClass2_install>/Snakefile
 ```
 
 Afterwards, the report can be found in the output folder and includes:
