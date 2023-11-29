@@ -68,6 +68,10 @@ rule common_plot_tax:
             method = config["methods"], smpls =  smpls.itertuples()
         )
     output:
+        report(expand("plots/{absrel}-Domain-by-{grouper}.pdf", 
+            absrel = ["aabund","rabund"], grouper = config["common"]["group-by"]),
+            caption="../report/fig-phylum.rst", category="Classification"
+        ),
         report(expand("plots/{absrel}-Phylum-by-{grouper}.pdf", 
             absrel = ["aabund","rabund"], grouper = config["common"]["group-by"]),
             caption="../report/fig-phylum.rst", category="Classification"

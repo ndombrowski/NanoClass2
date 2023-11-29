@@ -56,6 +56,23 @@ snakemake -s /home/ndombro/personal/testing/NanoClass2/Snakefile --configfile co
 
 ```
 
+
+Changes made to config.yaml:
+
+- samples:                           "../NanoClass2/example_files/mapping.csv"
+
+Changes to mapping.csv
+
+- Change path to: `/home/ndombro/personal/testing/NanoClass2/example_files/barcode01_merged.fastq.gz`
+
+
+ /home/ndombro/personal/testing/NanoClass2/scripts/tomat.py -k classifications/demo/kraken/R3A.kraken.out -f /home/ndombro/personal/testing/NanoClass2/./db/kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta           -m /home/ndombro/personal/testing/NanoClass2/./db/kraken/seqid2taxid.map
+
+
+
+
+
+
 ### Sanity checks
 
 #### Controlling otu table counts
@@ -104,19 +121,6 @@ Sum of Column 2 in centrifuge/R1A.centrifuge.otumat: 84
 Sum of Column 2 in centrifuge/R2A.centrifuge.otumat: 74
 Sum of Column 2 in centrifuge/R3A.centrifuge.otumat: 110
 
-
-
-
-Changes made to config.yaml:
-
-- samples:                           "../NanoClass2/example_files/mapping.csv"
-
-Changes to mapping.csv
-
-- Change path to: `/home/ndombro/personal/testing/NanoClass2/example_files/barcode01_merged.fastq.gz`
-
-
- /home/ndombro/personal/testing/NanoClass2/scripts/tomat.py -k classifications/demo/kraken/R3A.kraken.out -f /home/ndombro/personal/testing/NanoClass2/./db/kraken/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta           -m /home/ndombro/personal/testing/NanoClass2/./db/kraken/seqid2taxid.map
 
 
 
