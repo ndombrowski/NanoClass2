@@ -1,0 +1,102 @@
+---
+execute:
+  eval: false
+
+engine: knitr
+bibliography: references.bib
+---
+
+# Other databases
+
+NanoClass was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare alternative databases, such as Unite, can be found here.
+
+::: {.callout-important}
+To reduce runtime, NanoClass will only run those steps in the pipeline for which no output files are detected. This means that if a database was downloaded and build during an earlier run of NanoClass, it will automatically use this database, in stead of downloading and building a new one. This saves a lot of time and computational resources, but also requires care by the user to make sure the intended database is used.
+
+It is recommended to always use a fresh NanoClass application if a different database is used. Simply clone or download NanoClass again following the instructions in the quick start section of this documentation
+:::
+
+
+## Custom databases
+
+Most classification tools implemented in NanoClass can use alternative databases supplied by the user (but see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the `db/common/` subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass is started and NanoClass will create / reformat all tools-specific databases based on this user-provided database.
+
+Two files are required:
+
+**The reference sequences**
+
+The reference nucleotide sequences should be in an unzipped, multi-fasta file called ref-seqs.fna. The fasta header should have the sequence identifier only.
+
+Here is an example of the first two entries in the ref-seqs.fna of the default SILVA reference database:
+
+```
+>AY846379.1.1791
+AACCTGGTTGATCCTGCCAGTAGTCATATGCTTGTCTCAAAGATTAAGCCATGCATGTCTAAGTATAAACTGCTTATACT
+GTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTATTTGATGGTACCTCTACACGGATAACCGTAGTAATTCTAGA
+```
+
+**The reference taxonomy**
+
+The reference taxonomy should be in an unzipped tab-delimited file called ref-taxonomy.txt. The first column contains the sequence identifier corresponding to the identifiers used in the ref-seqs.fna. The second column contains a “;”-separated 7-level taxonomy string with domain;phylum;class;order;family;genus;species.
+
+Here is an example of some of the entries in ref-taxonomy.txt of the default SILVA reference database.
+
+```
+LT595716.1.1435 D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Lactobacillales;D_4__Carnobacteriaceae;D_5__Jeotgalibaca;D_6__NA
+AB696431.1.1480 D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__uncultured;D_4__NA;D_5__NA;D_6__NA
+AACY020207233.1273.2814 D_0__Bacteria;D_1__Marinimicrobia (SAR406 clade);D_2__NA;D_3__NA;D_4__NA;D_5__NA;D_6__NA
+```
+
+
+## Example using Unite
+
+Although not automatically implemented in NanoClass, it is possible to manually download the ITS UNITE database to be used in NanoClass. Note, that this might only work for a subset of databases.
+
+First download the UNITE database from [here](https://files.plutof.ut.ee/public/orig/98/AE/98AE96C6593FC9C52D1C46B96C2D9064291F4DBA625EF189FEC1CCAFCF4A1691.gz). Then unzip it and look for the reference sequences (sh_refs_qiime_ver8_99_04.02.2020.fasta) and the reference taxonomy (sh_taxonomy_qiime_ver8_99_04.02.2020.txt).
+
+Move these two files to the to a db/common/ directory in the NanoClass2 folder and rename them to ref-seqs.fna and ref-taxonomy.txt, respectively.
+
+
+```{bash}
+mkdir -p db/common/
+mkdir -p db/common/taxonomy
+mkdir -p db/common/data
+
+mv sh_refs_qiime_ver8_99_04.02.2020.fasta db/common/ref-seqs.fna
+mv sh_taxonomy_qiime_ver8_99_04.02.2020.txt db/common/ref-taxonomy.txt
+```
+
+Lastly, you need to create some empty files.
+
+```{bash}
+#dummy file for mothur
+touch db/common/ref-seqs.aln
+
+#dummy files for kraken and centrifuge
+touch db/common/seqid2taxid.map
+touch db/common/taxonomy/names.dmp
+touch db/common/taxonomy/nodes.dmp
+touch db/common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta
+touch db/common/ref-seqs-tax.fna
+```
+
+Due to some files being empty, some classifiers won't work unless these files are created.
+
+For now, these steps should allow you to use the following classifiers: blastn, dcmegablast, idtaxa, megablast, minimap, qiime, rdp and spingo.
+
+## Exceptions
+
+**Mother**
+
+For mother an additional fasta file is required with the multiple sequence alignments of all reference sequences in the database. The fasta header should be the same as the fasta header of the sequence file. The file should be named ref-seqs.aln and stored in `db/common` in the NanoClass2 foldr.
+
+If you do not have an alignment for your custom database, you can simply skip mother in the NanoClass run by removing it from the methods list in the config.yaml
+
+**Kraken2**
+
+Kraken2 cannot be used within NanoClass in combination with custom databases at this stage.
+
+**Centrifuge**
+
+Centrifuge cannot be used within NanoClass in combination with custom databases at this stage.
+

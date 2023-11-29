@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2023-11-29">
 
-<title>NanoClass2 – installation_instructions</title>
+<title>NanoClass2 – other_dbs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../source/run_nanoclass.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../source/references.html" rel="next">
+<link href="../source/run_nanoclass.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../source/installation_instructions.html">Installation</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../source/other_dbs.html">Other databases</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -147,7 +147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../source/installation_instructions.html" class="sidebar-item-text sidebar-link active">
+  <a href="../source/installation_instructions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Installation</span></a>
   </div>
 </li>
@@ -159,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../source/other_dbs.html" class="sidebar-item-text sidebar-link">
+  <a href="../source/other_dbs.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Other databases</span></a>
   </div>
 </li>
@@ -179,47 +179,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation">Installation</a>
+  <li><a href="#other-databases" id="toc-other-databases" class="nav-link active" data-scroll-target="#other-databases">Other databases</a>
   <ul class="collapse">
-  <li><a href="#install-condamamba" id="toc-install-condamamba" class="nav-link" data-scroll-target="#install-condamamba">Install conda/mamba</a></li>
-  <li><a href="#install-snakemake" id="toc-install-snakemake" class="nav-link" data-scroll-target="#install-snakemake">Install snakemake</a></li>
-  <li><a href="#install-nanoclass2" id="toc-install-nanoclass2" class="nav-link" data-scroll-target="#install-nanoclass2">Install NanoClass2</a></li>
+  <li><a href="#custom-databases" id="toc-custom-databases" class="nav-link" data-scroll-target="#custom-databases">Custom databases</a></li>
+  <li><a href="#example-using-unite" id="toc-example-using-unite" class="nav-link" data-scroll-target="#example-using-unite">Example using Unite</a></li>
+  <li><a href="#exceptions" id="toc-exceptions" class="nav-link" data-scroll-target="#exceptions">Exceptions</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ndombrowski/NanoClass2/blob/main/source/installation_instructions.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/ndombrowski/NanoClass2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ndombrowski/NanoClass2/blob/main/source/other_dbs.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/ndombrowski/NanoClass2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
 
-<section id="installation" class="level1">
-<h1>Installation</h1>
-<section id="install-condamamba" class="level2">
-<h2 class="anchored" data-anchor-id="install-condamamba">Install conda/mamba</h2>
-<p>To be able to run this workflow you need conda or mamba installed. If you do not have either of these installed, check out the installation instruction for <a href="https://conda.io/projects/conda/en/latest/user-guide/install/index.html">conda</a>. Since July 2023 conda comes with mamba installed and should be available when <a href="https://docs.anaconda.com/free/anaconda/install/update-version/">updating conda to v23.10.0</a>.</p>
-<p>If you only want to install mamba, follow the instructions found <a href="https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html">here</a>.</p>
-</section>
-<section id="install-snakemake" class="level2">
-<h2 class="anchored" data-anchor-id="install-snakemake">Install snakemake</h2>
-<p>This workflow was developed using snakemake v6.8.0 and python3.9.7 and you might run into problems when using different version, which is why we recommend installing snakemake as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> create <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda <span class="at">-n</span> snakemake_nanoclass python=3.9.7 snakemake=6.8.0 tabulate=0.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="other-databases" class="level1">
+<h1>Other databases</h1>
+<p>NanoClass was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare alternative databases, such as Unite, can be found here.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-</section>
-<section id="install-nanoclass2" class="level2">
-<h2 class="anchored" data-anchor-id="install-nanoclass2">Install NanoClass2</h2>
-<p>NanoClass2 can be installed via <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">git</a> as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/ndombrowski/NanoClass2.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-title-container flex-fill">
+Important
 </div>
-<p>If you don’t have or want to install git, you can also download NanoClass as follows:</p>
-<ol type="1">
-<li>Go to <a href="https://github.com/ndombrowski/NanoClass2" class="uri">https://github.com/ndombrowski/NanoClass2</a></li>
-<li>Click the green code button</li>
-<li>Download zip</li>
-<li>Extract zip</li>
-</ol>
+</div>
+<div class="callout-body-container callout-body">
+<p>To reduce runtime, NanoClass will only run those steps in the pipeline for which no output files are detected. This means that if a database was downloaded and build during an earlier run of NanoClass, it will automatically use this database, in stead of downloading and building a new one. This saves a lot of time and computational resources, but also requires care by the user to make sure the intended database is used.</p>
+<p>It is recommended to always use a fresh NanoClass application if a different database is used. Simply clone or download NanoClass again following the instructions in the quick start section of this documentation</p>
+</div>
+</div>
+<section id="custom-databases" class="level2">
+<h2 class="anchored" data-anchor-id="custom-databases">Custom databases</h2>
+<p>Most classification tools implemented in NanoClass can use alternative databases supplied by the user (but see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the <code>db/common/</code> subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass is started and NanoClass will create / reformat all tools-specific databases based on this user-provided database.</p>
+<p>Two files are required:</p>
+<p><strong>The reference sequences</strong></p>
+<p>The reference nucleotide sequences should be in an unzipped, multi-fasta file called ref-seqs.fna. The fasta header should have the sequence identifier only.</p>
+<p>Here is an example of the first two entries in the ref-seqs.fna of the default SILVA reference database:</p>
+<pre><code>&gt;AY846379.1.1791
+AACCTGGTTGATCCTGCCAGTAGTCATATGCTTGTCTCAAAGATTAAGCCATGCATGTCTAAGTATAAACTGCTTATACT
+GTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTATTTGATGGTACCTCTACACGGATAACCGTAGTAATTCTAGA</code></pre>
+<p><strong>The reference taxonomy</strong></p>
+<p>The reference taxonomy should be in an unzipped tab-delimited file called ref-taxonomy.txt. The first column contains the sequence identifier corresponding to the identifiers used in the ref-seqs.fna. The second column contains a “;”-separated 7-level taxonomy string with domain;phylum;class;order;family;genus;species.</p>
+<p>Here is an example of some of the entries in ref-taxonomy.txt of the default SILVA reference database.</p>
+<pre><code>LT595716.1.1435 D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Lactobacillales;D_4__Carnobacteriaceae;D_5__Jeotgalibaca;D_6__NA
+AB696431.1.1480 D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__uncultured;D_4__NA;D_5__NA;D_6__NA
+AACY020207233.1273.2814 D_0__Bacteria;D_1__Marinimicrobia (SAR406 clade);D_2__NA;D_3__NA;D_4__NA;D_5__NA;D_6__NA</code></pre>
+</section>
+<section id="example-using-unite" class="level2">
+<h2 class="anchored" data-anchor-id="example-using-unite">Example using Unite</h2>
+<p>Although not automatically implemented in NanoClass, it is possible to manually download the ITS UNITE database to be used in NanoClass. Note, that this might only work for a subset of databases.</p>
+<p>First download the UNITE database from <a href="https://files.plutof.ut.ee/public/orig/98/AE/98AE96C6593FC9C52D1C46B96C2D9064291F4DBA625EF189FEC1CCAFCF4A1691.gz">here</a>. Then unzip it and look for the reference sequences (sh_refs_qiime_ver8_99_04.02.2020.fasta) and the reference taxonomy (sh_taxonomy_qiime_ver8_99_04.02.2020.txt).</p>
+<p>Move these two files to the to a db/common/ directory in the NanoClass2 folder and rename them to ref-seqs.fna and ref-taxonomy.txt, respectively.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> db/common/</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> db/common/taxonomy</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> db/common/data</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> sh_refs_qiime_ver8_99_04.02.2020.fasta db/common/ref-seqs.fna</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> sh_taxonomy_qiime_ver8_99_04.02.2020.txt db/common/ref-taxonomy.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Lastly, you need to create some empty files.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dummy file for mothur</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/ref-seqs.aln</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#dummy files for kraken and centrifuge</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/seqid2taxid.map</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/taxonomy/names.dmp</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/taxonomy/nodes.dmp</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/ref-seqs-tax.fna</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Due to some files being empty, some classifiers won’t work unless these files are created.</p>
+<p>For now, these steps should allow you to use the following classifiers: blastn, dcmegablast, idtaxa, megablast, minimap, qiime, rdp and spingo.</p>
+</section>
+<section id="exceptions" class="level2">
+<h2 class="anchored" data-anchor-id="exceptions">Exceptions</h2>
+<p><strong>Mother</strong></p>
+<p>For mother an additional fasta file is required with the multiple sequence alignments of all reference sequences in the database. The fasta header should be the same as the fasta header of the sequence file. The file should be named ref-seqs.aln and stored in <code>db/common</code> in the NanoClass2 foldr.</p>
+<p>If you do not have an alignment for your custom database, you can simply skip mother in the NanoClass run by removing it from the methods list in the config.yaml</p>
+<p><strong>Kraken2</strong></p>
+<p>Kraken2 cannot be used within NanoClass in combination with custom databases at this stage.</p>
+<p><strong>Centrifuge</strong></p>
+<p>Centrifuge cannot be used within NanoClass in combination with custom databases at this stage.</p>
 
 
 </section>
@@ -576,13 +620,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">General</span>
+      <a href="../source/run_nanoclass.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Running NanoClass2</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../source/run_nanoclass.html" class="pagination-link">
-        <span class="nav-page-text">Running NanoClass2</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../source/references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -135,11 +135,6 @@ snakemake --cores 1 \
 ```
 
 
-### Using NanoClass2 with different databases
-
-NanoClass2 was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare the UNITE database for ITS amplicon sequences, as well as custom databases is provided on the [following website](https://ejongepier.github.io/NanoClass/databases.html).
-
-
 ### Generate a report
 
 After a successful run, you can create a report with some of the key output files as follows:
