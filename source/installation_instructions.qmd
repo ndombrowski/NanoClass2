@@ -16,7 +16,7 @@ If you only want to install mamba, follow the instructions found [here](https://
 
 ## Install snakemake
 
-This workflow was developed using snakemake v6.8.0 and python3.9.7 and you might run into problems when using different version, which is why we recommend installing snakemake as follows:
+This workflow was developed using snakemake v6.8.0 and python3.9.7 and you might run into problems when using different versions, which is why we recommend installing snakemake as follows:
 
 ```{bash}
 mamba create -c conda-forge -c bioconda -n snakemake_nanoclass python=3.9.7 snakemake=6.8.0 tabulate=0.8

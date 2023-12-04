@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-29">
+<meta name="dcterms.date" content="2023-12-04">
 
 <title>NanoClass2 – other_dbs</title>
 <style>
@@ -142,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">General</span></a>
+ <span class="menu-text">NanoClass2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="other-databases" class="level1">
 <h1>Other databases</h1>
-<p>NanoClass was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare alternative databases, such as Unite, can be found here.</p>
+<p>NanoClass was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass2 will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare alternative databases, such as Unite, can be found here.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -206,17 +206,17 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>To reduce runtime, NanoClass will only run those steps in the pipeline for which no output files are detected. This means that if a database was downloaded and build during an earlier run of NanoClass, it will automatically use this database, in stead of downloading and building a new one. This saves a lot of time and computational resources, but also requires care by the user to make sure the intended database is used.</p>
-<p>It is recommended to always use a fresh NanoClass application if a different database is used. Simply clone or download NanoClass again following the instructions in the quick start section of this documentation</p>
+<p>To reduce runtime, NanoClass2 will only run those steps in the pipeline for which no output files are detected. This means that if a database was downloaded and build during an earlier run of NanoClass2, it will automatically use this database instead of downloading and building a new one. This saves a lot of time and computational resources, but also requires care by the user to make sure the intended database is used.</p>
+<p>It is recommended to use a fresh NanoClass2 application if a different database is used. Simply clone or download NanoClass2 again following the instructions in the quick start section of this documentation.</p>
 </div>
 </div>
 <section id="custom-databases" class="level2">
 <h2 class="anchored" data-anchor-id="custom-databases">Custom databases</h2>
-<p>Most classification tools implemented in NanoClass can use alternative databases supplied by the user (but see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the <code>db/common/</code> subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass is started and NanoClass will create / reformat all tools-specific databases based on this user-provided database.</p>
+<p>Most classification tools implemented in NanoClass2 can use alternative databases supplied by the user (but see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the <code>db/common/</code> subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass2 is started and NanoClass2 will create and reformat all tools-specific databases based on this user-provided database.</p>
 <p>Two files are required:</p>
 <p><strong>The reference sequences</strong></p>
 <p>The reference nucleotide sequences should be in an unzipped, multi-fasta file called ref-seqs.fna. The fasta header should have the sequence identifier only.</p>
-<p>Here is an example of the first two entries in the ref-seqs.fna of the default SILVA reference database:</p>
+<p>Here is an example of an entry in the ref-seqs.fna of the default SILVA reference database:</p>
 <pre><code>&gt;AY846379.1.1791
 AACCTGGTTGATCCTGCCAGTAGTCATATGCTTGTCTCAAAGATTAAGCCATGCATGTCTAAGTATAAACTGCTTATACT
 GTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTATTTGATGGTACCTCTACACGGATAACCGTAGTAATTCTAGA</code></pre>
@@ -229,7 +229,7 @@ AACY020207233.1273.2814 D_0__Bacteria;D_1__Marinimicrobia (SAR406 clade);D_2__NA
 </section>
 <section id="example-using-unite" class="level2">
 <h2 class="anchored" data-anchor-id="example-using-unite">Example using Unite</h2>
-<p>Although not automatically implemented in NanoClass, it is possible to manually download the ITS UNITE database to be used in NanoClass. Note, that this might only work for a subset of databases.</p>
+<p>Although not automatically implemented in NanoClass2, it is possible to manually download the ITS UNITE database to be used in NanoClass2. Note, that this might only work for a subset of databases.</p>
 <p>First download the UNITE database from <a href="https://files.plutof.ut.ee/public/orig/98/AE/98AE96C6593FC9C52D1C46B96C2D9064291F4DBA625EF189FEC1CCAFCF4A1691.gz">here</a>. Then unzip it and look for the reference sequences (sh_refs_qiime_ver8_99_04.02.2020.fasta) and the reference taxonomy (sh_taxonomy_qiime_ver8_99_04.02.2020.txt).</p>
 <p>Move these two files to the to a db/common/ directory in the NanoClass2 folder and rename them to ref-seqs.fna and ref-taxonomy.txt, respectively.</p>
 <div class="cell">
@@ -252,7 +252,7 @@ AACY020207233.1273.2814 D_0__Bacteria;D_1__Marinimicrobia (SAR406 clade);D_2__NA
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/data/SILVA_138.1_SSURef_NR99_tax_silva.fasta</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> db/common/ref-seqs-tax.fna</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Due to some files being empty, some classifiers won’t work unless these files are created.</p>
+<p>These empty files are expected by some classifiers and you might run into issues when not creating these dummy files first.</p>
 <p>For now, these steps should allow you to use the following classifiers: blastn, dcmegablast, idtaxa, megablast, minimap, qiime, rdp and spingo.</p>
 </section>
 <section id="exceptions" class="level2">
@@ -637,7 +637,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">Copyright 2023, Nina Dombrowski<br>
-Last modified: November 29, 2023</div>
+Last modified: December 4, 2023</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

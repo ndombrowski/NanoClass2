@@ -54,6 +54,7 @@ cp ~/personal/testing/NanoClass2/jobscript.sh .
 
 snakemake -s /home/ndombro/personal/testing/NanoClass2/Snakefile --configfile config.yaml --use-conda --conda-prefix /home/ndombro/personal/testing/NanoClass2/.snakemake/conda --cores 1 --nolock --rerun-incomplete -np
 
+snakemake -s /home/ndombro/personal/testing/NanoClass2/Snakefile --configfile config.yaml --report
 ```
 
 

@@ -9,7 +9,7 @@ engine: knitr
 
 NanoClass2 will take de-multiplexed and compressed fastq files as input and generate OTU tables and several summary statistics as output.   
 
-To run NanoClass2 please, provide a single fastq.gz file per sample.
+To run NanoClass2 please, provide a single fastq.gz file per sample, i.e. concatenate your files before running NanoClass2.
 
 If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. You can do this by first subsampling your dataset and running all 11 classification tools on this smaller subsample. Tests on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run this tool on your entire dataset.
 
@@ -38,7 +38,7 @@ This file needs to contain the following columns:
 3. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now.
 4. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
 
-An example file could look like this (exchange <path> with the location of your samples):
+An example file could look like this (exchange <path> with the absolute or relative path to your samples):
 
 ```
 run,sample,barcode,path
@@ -49,7 +49,7 @@ demo,R3A,BC03,<path>/barcode03_merged.fastq.gz
 
 **2. The classifiers you want to use**
 
-You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, ...) classifiers you could use: `methods: ["blastn")`
+You can choose what classifiers you want to use in `methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]`. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, ...) classifiers you could for example write: `methods: ["blastn"]`
 
 
 **3. Subsampling our reads**
@@ -87,17 +87,17 @@ The name of the folder in which the results should be stored in.
 
 **5. Other settings**
 
-Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `qual_filtering`). Please check out the config.yaml file, which provides more detailed explanation on each setting.
+Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in `qual_filtering`). Please check out the config.yaml file, which provides more detailed explanations on each setting.
 
 
 ## Running NanoClass2
 
 ### Dry-run
 
-To test whether the workflow is defined properly do a dry-run first. In the command, do the following changes:
+To test whether the workflow is defined properly do a dry-run first. In the command below, do the following changes:
 
 1. Provide the path to where you installed NanoClass2 (and where the file specifying how the workflow is run, the Snakemake file, can be found) afer `--s`
-2.  Provide the path to the edited config file after `--configfile`
+2. Provide the path to the edited config file after `--configfile`
 3. Provide the path to where you want snakemake to install all program dependencies after `--conda-prefix`. We recommend to install these into the folder in which you downloaded NanoClass2 but you can change this if desired
 
 ```{bash}
@@ -107,7 +107,7 @@ conda activate snakemake_nanoclass
 #perform a dry-run
 snakemake --cores 1 \
     -s <path_to_NanoClass2_install>/Snakefile \
-    --configfile config.yaml \
+    --configfile <path_to_edited_config_file>/config.yaml \
     --use-conda --conda-prefix <path_to_NanoClass2_install>/.snakemake/conda \
     --nolock --rerun-incomplete -np
 ```
@@ -118,7 +118,7 @@ If the dry-run was successful you can run snakemake interactively with the comma
 
 ::: {.callout-warning}
 
-When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. For now we recommend setting the channel priorities to flexible to not run into issue when installing software dependencies.
+When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. If this happens we for now recommend setting the conda channel priorities to flexible to not run into issue when installing software dependencies.
 
 You can check your channel priorities in `~/.condarc` (Linux-environment)
 
@@ -148,7 +148,7 @@ snakemake --report report.html \
 Afterwards, the report can be found in the output folder and includes:
 
 - A shematic of the steps executed
-- A PDF containing information about the reads after quality filtering. To view the full report, download the file
+- A PDF containing information about the reads after quality filtering. To view the full report, download the individual files as only the first page is shown in the preview
 - Bargraphs for different taxonomic ranks (and classifiers if more than one was used)
 - Information about the run-times for each sample and statistics on the runtimes for each tool/sample
 

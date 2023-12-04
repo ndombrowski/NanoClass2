@@ -8,7 +8,7 @@ bibliography: references.bib
 
 # References
 
-NanoClass makes use of third-party software and resources. If you make use of NanoClass2 we recommend that you cite this software when using NanoClass2.
+NanoClass2 makes use of third-party software and resources. If you make use of NanoClass2 we recommend that you cite this software as well.
 
 The version numbers are the exact versions used to develop this workflow.
 

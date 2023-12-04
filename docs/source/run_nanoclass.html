@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-29">
+<meta name="dcterms.date" content="2023-12-04">
 
 <title>NanoClass2 – run_nanoclass</title>
 <style>
@@ -142,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">General</span></a>
+ <span class="menu-text">NanoClass2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -200,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="running-nanoclass2" class="level1">
 <h1>Running NanoClass2</h1>
 <p>NanoClass2 will take de-multiplexed and compressed fastq files as input and generate OTU tables and several summary statistics as output.</p>
-<p>To run NanoClass2 please, provide a single fastq.gz file per sample.</p>
+<p>To run NanoClass2 please, provide a single fastq.gz file per sample, i.e.&nbsp;concatenate your files before running NanoClass2.</p>
 <p>If you have no preference for a classifier, you first might want to test, which classifier performs best on your data. You can do this by first subsampling your dataset and running all 11 classification tools on this smaller subsample. Tests on data sets of variable complexity have shown that a small subset of data is enough to assess tool performance. Once you have decided which tool or tools to use you can run this tool on your entire dataset.</p>
 <section id="edit-the-configuration-file" class="level2">
 <h2 class="anchored" data-anchor-id="edit-the-configuration-file">Edit the configuration file</h2>
@@ -220,13 +220,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>barcode</code>: The barcode ID. Can be empty as it is not actively used in the workflow as of now.</li>
 <li><code>path</code>: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.</li>
 </ol>
-<p>An example file could look like this (exchange <path> with the location of your samples):</path></p>
+<p>An example file could look like this (exchange <path> with the absolute or relative path to your samples):</path></p>
 <pre><code>run,sample,barcode,path
 demo,R1A,BC01,&lt;path&gt;/barcode01_merged.fastq.gz
 demo,R2A,BC02,&lt;path&gt;/barcode02_merged.fastq.gz
 demo,R3A,BC03,&lt;path&gt;/barcode03_merged.fastq.gz</code></pre>
 <p><strong>2. The classifiers you want to use</strong></p>
-<p>You can choose what classifiers you want to use in <code>methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]</code>. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, …) classifiers you could use: <code>methods: ["blastn")</code></p>
+<p>You can choose what classifiers you want to use in <code>methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]</code>. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, …) classifiers you could for example write: <code>methods: ["blastn"]</code></p>
 <p><strong>3. Subsampling our reads</strong></p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -258,13 +258,13 @@ Important
 <p><strong>4. Output folder name</strong></p>
 <p>The name of the folder in which the results should be stored in.</p>
 <p><strong>5. Other settings</strong></p>
-<p>Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in <code>qual_filtering</code>). Please check out the config.yaml file, which provides more detailed explanation on each setting.</p>
+<p>Finally, you can change tool specific parameters: If desired, there are several parameters that can be changed by the user, such as the numbers of threads to use for the different tools or the settings used for the read quality filtering (in <code>qual_filtering</code>). Please check out the config.yaml file, which provides more detailed explanations on each setting.</p>
 </section>
 <section id="running-nanoclass2-1" class="level2">
 <h2 class="anchored" data-anchor-id="running-nanoclass2-1">Running NanoClass2</h2>
 <section id="dry-run" class="level3">
 <h3 class="anchored" data-anchor-id="dry-run">Dry-run</h3>
-<p>To test whether the workflow is defined properly do a dry-run first. In the command, do the following changes:</p>
+<p>To test whether the workflow is defined properly do a dry-run first. In the command below, do the following changes:</p>
 <ol type="1">
 <li>Provide the path to where you installed NanoClass2 (and where the file specifying how the workflow is run, the Snakemake file, can be found) afer <code>--s</code></li>
 <li>Provide the path to the edited config file after <code>--configfile</code></li>
@@ -277,7 +277,7 @@ Important
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#perform a dry-run</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">snakemake</span> <span class="at">--cores</span> 1 <span class="dt">\</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">-s</span> <span class="op">&lt;</span>path_to_NanoClass2_install<span class="op">&gt;</span>/Snakefile <span class="dt">\</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--configfile</span> config.yaml <span class="dt">\</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--configfile</span> <span class="op">&lt;</span>path_to_edited_config_file<span class="op">&gt;</span>/config.yaml <span class="dt">\</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--use-conda</span> <span class="at">--conda-prefix</span> <span class="op">&lt;</span>path_to_NanoClass2_install<span class="op">&gt;</span>/.snakemake/conda <span class="dt">\</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--nolock</span> <span class="at">--rerun-incomplete</span> <span class="at">-np</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -295,7 +295,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. For now we recommend setting the channel priorities to flexible to not run into issue when installing software dependencies.</p>
+<p>When running NanoClass2 for the first time, you might get a warning to set condas channel priority to strict when installing some dependencies, for example QIIME 2. If this happens we for now recommend setting the conda channel priorities to flexible to not run into issue when installing software dependencies.</p>
 <p>You can check your channel priorities in <code>~/.condarc</code> (Linux-environment)</p>
 <p>You can reset the channel priorities with <code>conda config --set channel_priority flexible</code>.</p>
 </div>
@@ -319,7 +319,7 @@ Warning
 <p>Afterwards, the report can be found in the output folder and includes:</p>
 <ul>
 <li>A shematic of the steps executed</li>
-<li>A PDF containing information about the reads after quality filtering. To view the full report, download the file</li>
+<li>A PDF containing information about the reads after quality filtering. To view the full report, download the individual files as only the first page is shown in the preview</li>
 <li>Bargraphs for different taxonomic ranks (and classifiers if more than one was used)</li>
 <li>Information about the run-times for each sample and statistics on the runtimes for each tool/sample</li>
 </ul>
@@ -703,7 +703,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">Copyright 2023, Nina Dombrowski<br>
-Last modified: November 29, 2023</div>
+Last modified: December 4, 2023</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

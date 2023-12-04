@@ -7,13 +7,13 @@ execute:
 engine: knitr
 ---
 
-## General
+## NanoClass2
 
 NanoClass2 is a taxonomic meta-classifier for 16S/18S amplicon sequencing data generated with the Oxford Nanopore MinION. The first iteration of this workflow, NanoClass, was originally developed by Evelien Jongepier and the original version can be found [here](https://ejongepier.github.io/NanoClass/getting_started.html).
 
 With a single command, you can run upto 11 classification tools on multiple samples in parallel, including BLASTN, Centrifuge, Kraken2, IDTAXA, MegaBLAST, dcMegaBLAST, Minimap2, Mothur, QIIME2, RDP and SPINGO. Read preparation steps, such as quality trimming, length filtering and sub-sampling, are an integral part of the pipeline.
 
-NanoClass automatically installs all software packages and dependencies, downloads and builds required taxonomic databases and runs the analysis on your samples.
+NanoClass2 automatically installs all software packages and dependencies, downloads and builds required taxonomic databases and runs the analysis on your samples.
 
 
 ### Changes 
