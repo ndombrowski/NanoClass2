@@ -8,7 +8,7 @@ properties:
 
     samples:
         type:                         string
-        default:                      "samples.csv"
+        default:                      "mapping.csv"
 
     methods:
         type:                         array
