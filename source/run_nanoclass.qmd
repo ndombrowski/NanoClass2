@@ -38,13 +38,13 @@ This file needs to contain the following columns:
 3. `barcode`: The barcode ID. Can be empty as it is not actively used in the workflow as of now.
 4. `path`: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.
 
-An example file could look like this (exchange <path> with the absolute or relative path to your samples):
+An example file could look like this (exchange <path> with the absolute path to your samples. Preferably **don't** use the relative path unless you start your analysis relative to where the Snakefile is.):
 
 ```
 run,sample,barcode,path
-demo,R1A,BC01,<path>/barcode01_merged.fastq.gz
-demo,R2A,BC02,<path>/barcode02_merged.fastq.gz
-demo,R3A,BC03,<path>/barcode03_merged.fastq.gz
+demo,R1A,BC01,<absolute_path>/barcode01_merged.fastq.gz
+demo,R2A,BC02,<absolute_path>/barcode02_merged.fastq.gz
+demo,R3A,BC03,<absolute_path>/barcode03_merged.fastq.gz
 ```
 
 **2. The classifiers you want to use**
