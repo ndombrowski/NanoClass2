@@ -13,3 +13,9 @@ For detailed instructions on how to use NanoClass2, please visit [the manual](ht
 NanoClass is using Kraken2 as one of the classifiers but users have noticed that when using older Kraken versions there is a problem when downloading the Silva database.
 
 We plan to make kraken2 available again but since this means updating the used Silva database throughout the workflow this is still in progress. For now, we recommend running this workflow without Kraken2 if you setup NanoClass2 for the first time.
+
+**Cite**
+
+If you found this software useful and used it in your own research, please cite us using the following doi:
+
+[![DOI](https://zenodo.org/badge/722016433.svg)](https://doi.org/10.5281/zenodo.14264106)
