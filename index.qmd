@@ -1,17 +1,19 @@
 ---
 toc: true
-
 execute:
   eval: false
 
 engine: knitr
 ---
 
+<div style="text-align: justify">
+
+
 ## NanoClass2
 
 NanoClass2 is a taxonomic meta-classifier for 16S/18S amplicon sequencing data generated with the Oxford Nanopore MinION. The first iteration of this workflow, NanoClass, was originally developed by Evelien Jongepier and the original version can be found [here](https://ejongepier.github.io/NanoClass/getting_started.html).
 
-With a single command, you can run upto 11 classification tools on multiple samples in parallel, including BLASTN, Centrifuge, Kraken2, IDTAXA, MegaBLAST, dcMegaBLAST, Minimap2, Mothur, QIIME2, RDP and SPINGO. Read preparation steps, such as quality trimming, length filtering and sub-sampling, are an integral part of the pipeline.
+With a single command, you can run up to 11 classification tools on multiple samples in parallel, including BLASTN, Centrifuge, Kraken2, IDTAXA, MegaBLAST, dcMegaBLAST, Minimap2, Mothur, QIIME2, RDP and SPINGO. Read preparation steps, such as quality trimming, length filtering and sub-sampling, are an integral part of the pipeline.
 
 NanoClass2 automatically installs all software packages and dependencies, downloads and builds required taxonomic databases and runs the analysis on your samples.
 
@@ -22,7 +24,7 @@ The following changes were made compared to the first version of NanoClass:
 
 - Use of SILVA 138.1_SSURef_NR99 instead pf SILVA 132_SSURef_NR99
 - Updating to Silva 138 now also means eukaryotic sequences are included in the database
-- Updated the Kraken2 version to work with the changed SILVA ftp path
+- Updated Kraken2 to work with the changed SILVA ftp path
 - Read filtering is now done with Chopper instead of Nanofilt
 - Chopper allows additional quality filtering and to trim nucleotides from the beginning and the end of the read
 - All classifiers use now exactly the same reference files

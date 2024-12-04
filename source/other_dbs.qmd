@@ -6,9 +6,12 @@ engine: knitr
 bibliography: references.bib
 ---
 
+<div style="text-align: justify">
+
+
 # Other databases
 
-NanoClass was designed to classify 16S or 18S rRNA amplicon sequences based on the SILVA database. Most tools implemented in NanoClass2 will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warrenties, but some advise on how to prepare alternative databases, such as Unite, can be found here.
+NanoClass was designed to classify 16S or 18S rRNA gene amplicon sequences based on the SILVA database. Most tools implemented in NanoClass2 will be able to classify sequences using alternative databases. The use of custom databases has not been fully tested and comes with no warranties, but some advice on how to prepare alternative databases, such as Unite, can be found here.
 
 ::: {.callout-important}
 To reduce runtime, NanoClass2 will only run those steps in the pipeline for which no output files are detected. This means that if a database was downloaded and build during an earlier run of NanoClass2, it will automatically use this database instead of downloading and building a new one. This saves a lot of time and computational resources, but also requires care by the user to make sure the intended database is used.
@@ -19,7 +22,7 @@ It is recommended to use a fresh NanoClass2 application if a different database 
 
 ## Custom databases
 
-Most classification tools implemented in NanoClass2 can use alternative databases supplied by the user (but see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the `db/common/` subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass2 is started and NanoClass2 will create and reformat all tools-specific databases based on this user-provided database.
+Most classification tools implemented in NanoClass2 can use alternative databases supplied by the user (see exceptions below), provided they are formatted correctly. These databases will not be automatically downloaded as part of the NanoClass pipeline, as is the case for the SILVA 16S or 18S databases. Instead, users should provide the databases themselves and store them in the `db/common/` subdirectory of the NanoClass2 directory. These will then be automatically detected once NanoClass2 is started and NanoClass2 will create and reformat all tools-specific databases based on this user-provided database.
 
 Two files are required:
 
@@ -86,11 +89,11 @@ For now, these steps should allow you to use the following classifiers: blastn, 
 
 ## Exceptions
 
-**Mother**
+**Mothur**
 
-For mother an additional fasta file is required with the multiple sequence alignments of all reference sequences in the database. The fasta header should be the same as the fasta header of the sequence file. The file should be named ref-seqs.aln and stored in `db/common` in the NanoClass2 foldr.
+For Mothur an additional fasta file is required with the multiple sequence alignments of all reference sequences in the database. The fasta header should be the same as the fasta header of the sequence file. The file should be named ref-seqs.aln and stored in `db/common` in the NanoClass2 folder.
 
-If you do not have an alignment for your custom database, you can simply skip mother in the NanoClass run by removing it from the methods list in the config.yaml
+If you do not have an alignment for your custom database, you can simply skip mother in the NanoClass2 run by removing it from the methods list in the config.yaml
 
 **Kraken2**
 

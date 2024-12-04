@@ -6,6 +6,9 @@ project:
     - "!Readme.md"
     - "!source/documentation.qmd"
 
+date-modified: last-modified
+title-block-style: none
+
 website:
   title: "NanoClass2"
   repo-url: https://github.com/ndombrowski/NanoClass2
@@ -23,14 +26,13 @@ website:
   page-footer:
     center: |
       Copyright 2023, Nina Dombrowski  
-      Last modified: {{< meta date >}} 
+      Last modified: {{< meta date-modified >}} 
 
-format:
+format: 
   html:
     theme:
       light: lumen
       dark: cyborg
-    date: last-modified
     toc: true
     code-copy: true
     code-overflow: wrap

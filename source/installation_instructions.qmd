@@ -5,11 +5,14 @@ execute:
 engine: knitr
 ---
 
+<div style="text-align: justify">
+
+
 # Installation
 
 ## Install conda/mamba
 
-To be able to run this workflow you need conda or mamba installed. If you do not have either of these installed, check out the installation instruction for [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html). Since July 2023 conda comes with mamba installed and should be available when [updating conda to v23.10.0](https://docs.anaconda.com/free/anaconda/install/update-version/).
+To be able to run this workflow you need to have conda or mamba installed. If you do not have either of these, check out the installation instruction for [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html). Since July 2023 conda comes with mamba installed and should be available when [updating conda to v23.10.0](https://docs.anaconda.com/free/anaconda/install/update-version/).
 
 If you only want to install mamba, follow the instructions found [here](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html).
 

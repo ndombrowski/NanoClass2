@@ -6,6 +6,9 @@ engine: knitr
 bibliography: references.bib
 ---
 
+<div style="text-align: justify">
+
+
 # References
 
 NanoClass2 makes use of third-party software and resources. If you make use of NanoClass2 we recommend that you cite this software as well.

@@ -2,13 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.6.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-04-23">
 
-<title>NanoClass2</title>
+<title>run_nanoclass – NanoClass2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -72,12 +71,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-b663525e4b92bb903b2199e2d401bf36.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-a1e4c769dfb8ba454fda448df42b92ec.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-441356639b5896dfc7bdc8041ace568d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e6a4b2ced79a6b557955bf8b87c44dc2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -115,13 +114,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../source/run_nanoclass.html">Running NanoClass2</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -200,33 +199,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/ndombrowski/NanoClass2/blob/main/source/run_nanoclass.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/ndombrowski/NanoClass2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 23, 2024</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
+<header id="title-block-header">
 
 
 </header>
 
 
-<section id="running-nanoclass2" class="level1">
+<section id="running-nanoclass2" class="level1" style="text-align: justify">
 <h1>Running NanoClass2</h1>
 <p>NanoClass2 will take de-multiplexed and compressed fastq files as input and generate OTU tables and several summary statistics as output.</p>
 <p>To run NanoClass2 please, provide a single fastq.gz file per sample, i.e.&nbsp;concatenate your files before running NanoClass2.</p>
@@ -238,22 +219,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="op">&lt;</span>path_to_NanoClass2_folder<span class="op">&gt;</span>/config.yaml .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You can also run your analyses in the NanoClass2 folder you downloaded, but often it is easier to separate software from analyses.</p>
+<p>You can also run your analyses in the NanoClass2 folder you downloaded, but it is preferable to separate software from analyses.</p>
 <p>Next, open the config.yaml with an editor, such as nano. There are several things you can modify:</p>
 <p><strong>1. The samples you want to analyse</strong></p>
-<p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>. You can provide the relative path (i.e.&nbsp;relative to the working directory you start the snakemake workflow in) or absolute path (i.e.&nbsp;the location of a file or directory from the root directory(<code>/</code>)).</p>
+<p>Here, you need to provide the path to a comma-separated mapping file that describes the samples you want to analyse in the section: <code>samples_file: "example_files/mapping.csv"</code>.</p>
 <p>This file needs to contain the following columns:</p>
 <ol type="1">
-<li><code>run</code>: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different sub-folders.</li>
-<li><code>sample</code>: The names of your sample. This id will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.</li>
-<li><code>barcode</code>: The barcode ID. Can be empty as it is not actively used in the workflow as of now.</li>
-<li><code>path</code>: Path to the fastq.gz files. You can provide the relative or absolute path. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.</li>
+<li><code>run</code>: The run name of your sample. This is useful if you want to run NanoClass several times on the same data but with different settings. Results for each run will be generated in different folders based on the run name. You can use any label as long as it consists of only letters and numbers.</li>
+<li><code>sample</code>: The names of your sample. This ID will be used to label all files created in subsequent steps. Your sample names should be unique and only contain letters and numbers. Do not use other symbols, such as spaces, dots or underscores in your sample names.</li>
+<li><code>barcode</code>: The barcode column should remain empty as NanoClass2 currently only accepts demultiplexed data.</li>
+<li><code>path</code>: Absolute path to the fastq.gz files. The workflow accepts one file per barcode, so if you have more than one file merge these files first, for example using the cat command.</li>
 </ol>
 <p>An example file could look like this (exchange <path> with the absolute path to your samples. Preferably <strong>don’t</strong> use the relative path unless you start your analysis relative to where the Snakefile is.):</path></p>
 <pre><code>run,sample,barcode,path
-demo,R1A,BC01,&lt;absolute_path&gt;/barcode01_merged.fastq.gz
-demo,R2A,BC02,&lt;absolute_path&gt;/barcode02_merged.fastq.gz
-demo,R3A,BC03,&lt;absolute_path&gt;/barcode03_merged.fastq.gz</code></pre>
+demo,R1A,,&lt;absolute_path&gt;/barcode01_merged.fastq.gz
+demo,R2A,,&lt;absolute_path&gt;/barcode02_merged.fastq.gz
+demo,R3A,,&lt;absolute_path&gt;/barcode03_merged.fastq.gz</code></pre>
 <p><strong>2. The classifiers you want to use</strong></p>
 <p>You can choose what classifiers you want to use in <code>methods: ["blastn","centrifuge","dcmegablast","idtaxa","megablast","minimap","mothur","qiime","rdp","spingo"]</code>. If you want to first compare different classifiers you can use the full list if you just want to use one (or two, …) classifiers you could for example write: <code>methods: ["blastn"]</code></p>
 <p><strong>3. Subsampling our reads</strong></p>
@@ -270,7 +251,7 @@ Important
 <p>In this section, we can specify whether we would like to subset the number of reads and how many reads per sample you like to include. This allows us to run NanoClass2 in two modes:</p>
 <ol type="1">
 <li><strong>With subsampling</strong>: Use this, if you want to compare several classifiers on a smaller subsample of your data. We can subsample our data, by setting <code>skip: false</code> in the subsample section of the yaml file. Additionally, we can specify how many reads we want to analyse per sample with <code>samplesize: 100</code>.</li>
-<li><strong>Without subsampling</strong>: Use this, if you already know what classifier you want to use. We toggle the subsampling off by setting using <code>skip: true</code> in the subsample section of the yaml file.</li>
+<li><strong>Without subsampling</strong>: Use this, if you already know what classifier you want to use. You can toggle the subsampling off by setting using <code>skip: true</code> in the subsample section of the yaml file.</li>
 </ol>
 </div>
 </div>
@@ -279,7 +260,7 @@ Important
     skip:                          false
     samplesize:                    100
     environment:                   "preprocess.yml"</code></pre>
-<p>In this example we disable subsampling and analyse all our reads.</p>
+<p>In the second example below, we disable subsampling and analyse all our reads.</p>
 <pre><code>subsample:
     skip:                          true
     samplesize:                    100
@@ -297,7 +278,7 @@ Important
 <ol type="1">
 <li>Provide the path to where you installed NanoClass2 (and where the file specifying how the workflow is run, the Snakemake file, can be found) afer <code>--s</code></li>
 <li>Provide the path to the edited config file after <code>--configfile</code></li>
-<li>Provide the path to where you want snakemake to install all program dependencies after <code>--conda-prefix</code>. We recommend to install these into the folder in which you downloaded NanoClass2 but you can change this if desired</li>
+<li>Provide the path to where you want Snakemake to install all program dependencies after <code>--conda-prefix</code>. We recommend to install these into the folder in which you downloaded NanoClass2 but you can change this if desired</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#activate conda environment with your snakemake installation, i.e. </span></span>
@@ -313,7 +294,7 @@ Important
 </section>
 <section id="run-nanoclass2-interactively" class="level3">
 <h3 class="anchored" data-anchor-id="run-nanoclass2-interactively">Run NanoClass2 interactively</h3>
-<p>If the dry-run was successful you can run snakemake interactively with the command below. Adjust the cores according to your system.</p>
+<p>If the dry-run was successful you can run Snakemake interactively with the command below. Adjust the cores according to your system.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -544,18 +525,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -587,7 +557,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -622,7 +630,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -670,7 +682,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -898,7 +909,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../source/installation_instructions.html" class="pagination-link  aria-label=" installation"="">
+      <a href="../source/installation_instructions.html" class="pagination-link" aria-label="Installation">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Installation</span>
       </a>          
   </div>
@@ -916,7 +927,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright 2023, Nina Dombrowski<br>
-Last modified: April 23, 2024</p>
+Last modified: 2024-12-04</p>
 <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ndombrowski/NanoClass2/blob/main/source/run_nanoclass.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/ndombrowski/NanoClass2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
