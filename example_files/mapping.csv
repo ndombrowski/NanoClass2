@@ -1,4 +1,4 @@
 ﻿run,sample,barcode,path
-demo,R1A,BC01,your_path/example_files/barcode01_merged.fastq.gz
-demo,R2A,BC02,your_path/example_files/barcode02_merged.fastq.gz
-demo,R3A,BC03,your_path/example_files/barcode03_merged.fastq.gz
+demo,R1A,,your_path/example_files/barcode01_merged.fastq.gz
+demo,R2A,,your_path/example_files/barcode02_merged.fastq.gz
+demo,R3A,,your_path/example_files/barcode03_merged.fastq.gz
