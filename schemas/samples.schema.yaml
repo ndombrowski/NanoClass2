@@ -4,9 +4,11 @@ description:          an entry in the sample sheet
 properties:
     run:
         type:         string
+        pattern:      "^[A-Za-z0-9]+$"
         description:  ID for the nanopore run. Can contain multiple sample IDs.
     sample:
         type:         string
+        pattern:      "^[A-Za-z0-9]+$"
         description:  Sample ID for individual sample.
     #barcode:
     #    type:         string
