@@ -8,10 +8,10 @@ properties:
     sample:
         type:         string
         description:  Sample ID for individual sample.
-    barcode:
-        type:         string
-        pattern:      "BC[0-1][0-9]"
-        description:  Nanopore barcode number used if multiplexed.
+    #barcode:
+    #    type:         string
+    #    pattern:      "BC[0-9][0-9]"
+    #    description:  Nanopore barcode number used if multiplexed.
     path:
         type:         string
         description:  Path to input file in fastq.gz format. If path is within NanoClass directory and project is under git control it can easily be archived. 
