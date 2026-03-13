@@ -101,7 +101,7 @@ rule common_plot_tax:
         os.path.join(ENVDIR,config["common"]["environment"])
     shell:
         """
-        mkdir -p ./plots
+        mkdir -p ./plots ./tables
         Rscript {SRCDIR}/barplot.R {input} 2> {log}
         """
 
