@@ -20,6 +20,13 @@ smpls = pd.read_csv(config["samples"], dtype=str).set_index(["run", "sample"], d
 smpls.index = smpls.index.set_levels([i.astype(str) for i in smpls.index.levels])
 validate(smpls, schema="schemas/samples.schema.yaml")
 
+# Ensure that SAMPLE IDs are not duplicated
+if smpls.index.duplicated().any():
+    smpls_raw = pd.read_csv(config["samples"], dtype=str)
+    smpls_raw["csv_row"] = smpls_raw.index + 2  # 1-based + header
+    dupes = smpls_raw[smpls_raw.duplicated(subset=["run", "sample"], keep=False)]
+    raise ValueError(f"Duplicate (run, sample) entries in samples file:\n{dupes.to_string(index=False)}")
+
 wildcard_constraints:
     sample = '[A-Za-z0-9]+',
     run = '[A-Za-z0-9]+'
