@@ -5,9 +5,9 @@
 ##SBATCH --mail-type=END,FAIL
 ##SBATCH --mail-user=...@...
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=58
+#SBATCH --cpus-per-task=20
 #SBATCH --time=4000
-#SBATCH --mem=460G
+#SBATCH --mem=100G
 
 # Set LC_ALL and export it
 export LC_ALL=en_US.UTF-8
@@ -21,11 +21,11 @@ source ~/.bashrc
 ## Make sure to use the snakemake env installed in the amplicomics share
 conda activate /zfs/omics/projects/amplicomics/miniconda3/envs/snakemake_nanoclass2
 
-srun mkdir -p /scratch/$USER/tmp/
+mkdir -p /scratch/$USER/tmp/
 export TMPDIR=/scratch/$USER/tmp/
 
 ## Run nanoclass2
-cmd="srun --cores $SLURM_CPUS_ON_NODE snakemake \
+cmd="snakemake \
     -s /zfs/omics/projects/amplicomics/bin/NanoClass2/Snakefile \
     --configfile config.yaml --use-conda \
     --conda-prefix /zfs/omics/projects/amplicomics/bin/NanoClass2/.snakemake/conda \

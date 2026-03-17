@@ -30,12 +30,12 @@ rule parse_minimap:
     output:
          "classifications/{run}/minimap/{sample}.minimap.out"
     params:
-        coverage_threshold=config["minimap"]["pctidentity"]
+        coverage_threshold=config["minimap"]["coverage_threshold"]
     conda:
         os.path.join(ENVDIR,config["minimap"]["environment"])
     shell: """
     sed 's/AS:i://' {input} | \
-        awk -F'\t' -v OFS='\t' '{{len=$2; start=$3; end=$4; print $1, $6, $12, $15, len, start, end, $10, $11, (end-start+1)/len*100, $10/$11}}' | \
+        awk -F'\t' -v OFS='\t' '{{len=$2; start=$3; end=$4; print $1, $6, $12, $15, len, start, end, $10, $11, (end-start)/len*100, $10/$11}}' | \
         python3 {SRCDIR}/filter_paf.py -i - -o - -c {params.coverage_threshold} | \
         awk -v OFS="\t" '{{print $1, $2}}' >  {output}
     """
